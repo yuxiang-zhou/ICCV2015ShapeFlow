@@ -14,6 +14,7 @@ eyes, mouth etc.) which not only vary with respect to shape
 and appearance, but can demonstrate a number of expressions
 due to muscles. Recently, we have witnessed a great
 progress in object detection, alignment and recognition.
+
 In order to train deformable models with good generalization
 ability, a large amount of carefully annotated data
 is needed. Developing useful datasets and benchmarks that
@@ -34,6 +35,7 @@ annotation of 68 landmarks1. This means that the annotation
 of 1000 images requires a total of about 130 hours2.
 Furthermore, fatigue can cause errors on the accuracy and
 consistency of annotations and they may require correction.
+
 In this paper, we deal with the problem of automatically
 constructing a robust deformable model using (1) a simple
 bounding box object detector and (2) a shape by means of
@@ -58,6 +60,7 @@ the annotation of the shape examples is not a time consuming
 task, due to their small number. Furthermore, there are
 unsupervised techniques to learn the shape prior (model) directly
 from images \cite{?}.
+
 Due to the fact that manual annotation is a rather costly
 and labour-intensive procedure, unsupervised and semisupervised
 learning of models for the tasks of alignment,
@@ -72,6 +75,7 @@ that both performing alignment to a new image and constructing
 a model is not straightforward. Our methodology
 differs from these works because we employ an explicit texture
 model which is learned through the process.
+
 The two most closely related works to the proposed
 method are the automatic construction of Active Appearance
 Models (AAMs) in \cite{?} and the so-called RASL
@@ -100,6 +104,13 @@ in order for an automatically constructed AAM methodology
 to be robust to both within-class and out-of-class outliers4,
 which cannot be avoided in totally unsupervised settings,
 statistical component analysis techniques should be
-employed \cite{?}. 
+employed \cite{?}. We summarize our contributions as follows:
+
+
+We present experimental results on the task of face alignment.
+We choose this application because there exist many
+in-the-wild facial databases with a large number of images
+and annotated landmarks, hence solid quantitative evaluations
+can be performed.
 
 \clearpage

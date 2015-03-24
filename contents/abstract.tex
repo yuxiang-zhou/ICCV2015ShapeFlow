@@ -1,18 +1,16 @@
-Uses Abstract from Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder. 
-Deformable objects are everywhere. Faces, cars, bicycles,
-chairs etc. Recently, there has been a wealth of research
+Uses Abstract from Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder with some modification. 
+Deformable objects are everywhere. Faces, ears, bodies,
+bottles etc. Recently, there has been a wealth of research
 on training deformable models for object detection,
 part localization and recognition using annotated data. In
 order to train deformable models with good generalization
 ability, a large amount of carefully annotated data is required,
 which is a highly time consuming and costly task.
 We propose the first - to the best of our knowledge - method
-for automatic construction of deformable models using images
+for construction of dense deformable models using images
 captured in totally unconstrained conditions, recently
 referred to as “in-the-wild”. The only requirements of the
-method are a crude bounding box object detector and apriori
-knowledge of the object’s shape (e.g. a point distribution
-model). The object detector can be as simple as the
+method are drawings of image features. The object detector can be as simple as the
 Viola-Jones algorithm (e.g. even the cheapest digital camera
 features a robust face detector). The 2D shape model
 can be created by using only a few shape examples with deformations.

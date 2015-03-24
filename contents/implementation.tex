@@ -66,7 +66,7 @@ With decision functions built from training data, the second module designed to 
 Since shapes from training data set having completely no motion smoothness, it is of importance to contain constrains in optimization on how pixels moves from one shape frame to another. We constrain the optimization on trajectory subspace.
 We supervise trajectories from sparse landmarks. To begin with, Non-rigid Iterative Closest Point (NICP)\cite{?} applied on sparse annotated points. NICP deforms target points to fit the template iteratively until all points on target deformed to match points on template. Performs the algorithm for all training data will get an implicit point correlation between sparse shapes.
 
-Since optical flow pixel-wise frame registration, the trajectory basis build should also matches the dimension, which is dense on shapes with trajectory length depends on number of training data. With correspondences produced after applying NICP, Thin-Plate Spline (TPS)\cite{?} transformations are utilized to warp every shape planes to template plane thereby generates an implicit dense shape registering. For all dense transformations $\bm{u_n}(\bm{x}), n \in {1,...,F}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
+Since optical flow pixel-wise frame registration, the trajectory basis build should also matches the dimension, which is dense on shapes with trajectory length depends on number of training data. With correspondences produced after applying NICP, Thin-Plate Spline (TPS)\cite{?} transformations are utilized to warp every shape planes to template plane thereby generates an implicit dense shape registering. For all dense transformations $\bm{u_n}(\bm{x}), n \in \{1,...,F\}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
 \begin{equation}
     \begin{bmatrix}
         \bm{u_1}(\bm{x}) \\
@@ -95,20 +95,17 @@ Although optical flow on shapes made under the assumption that objects motion ar
 \subsubsection{Algorithm}
 To register all decision functions to template shape, decision function $d_i(\bm{x}), i \in {1,...,F}$ are grouped into one sequence before applying flow algorithm. The objective cost function we would like to minimise is:
 \begin{align}
-    E[\bm{u_n}(\bm{x}), \bm{v}]&=\alpha \int_{\Omega}\sum_{n=1}^F|\bm{d_n}(x+\bm{u_n}(x))-\bm{d_0}(x)\| dx  \label{eq:costfunc}\\
+    \operatorname*{arg\,min}_{\bm{u_n}(\bm{x}), \bm{v}}&=\alpha \int_{\Omega}\sum_{n=1}^F|\bm{d_n}(x+\bm{u_n}(x))-\bm{d_0}(x)\| dx  \label{eq:costfunc}\\
     &+ \beta \int_{\Omega}\sum_{n=1}^F\|\bm{u_n}(x)-\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(x)\|^2 dx \label{eq:lowrank}\\
     &+ \sum[\bm{TV}(Qv)]  + v^T.L.v
 \end{align}
-where $d_n(x)$ is the decision function from~\eqref{eq:decisionfunc}, which returns possibilities of given coordinate classified as shape compunent. $TV(Qv)$ is total variation as regularization on low rank subspace, $Q$ is trajectory basis and $v^T.L.v$ is low rank spacial constrains.
+where $d_n(x)$ is the decision function from~\eqref{eq:decisionfunc}, which returns possibilities of given coordinate classified as shape component where coordianates are from set $\Omega \in \Re^2$. $TV(Qv)$ is total variation as regularization on low rank subspace, $Q$ is trajectory basis and $v^T.L.v$ is low rank spacial constrains.
 
 Term~\eqref{eq:costfunc} state the shape constancy where points having similar classification probability are from same object.
 Part~\eqref{eq:lowrank} applies constrain on low rank trajectory basis states in section~\ref{sec:trabasis}.
-The objective cost function has two free parameters $u$ and $v$, so we performs alternating minimisation. The equation can be solved using thresholding scheme as used in \cite{?} after linearisation of image functions. The minimisation can be speed up by paralleling the minimisation for every spatial-temporal point $(x;n), x \in \Omega, n \in {1,...F}$ independently.
+The objective cost function has two free parameters $u$ and $v$, so we performs alternating minimisation. The equation can be solved using thresholding scheme as used in \cite{?} after linearisation of image functions. The minimisation can be speed up by paralleling the minimisation for every spatial-temporal point $(x;n), x \in \Omega, n \in \{1,...F\}$ independently.
 
-After solving the equation, $\bm{u_n}(\bm{x}), x \in \Omega$ gives a group of deformation fields that registering every decision functions in the shape sequence to reference frame e.g. $\bm{u_1}(\bm{x})$ registers decision function $\bm{d_1}(\bm{x})$ to the reference frame. Applying PCA on deformations gives dense deformable shape model:
-\begin{equation*}
-    \bm{s_p}=\bm{\bar{s}} + \bm{U}_s\bm{p}
-\end{equation*}
+After solving the equation, $\bm{u_n}(\bm{x}), x \in \Omega$ gives a group of deformation fields that registering every decision functions in the shape sequence to reference frame e.g. $\bm{u_1}(\bm{x})$ registers decision function $\bm{d_1}(\bm{x})$ to the reference frame. Figure~\ref{fig:deformationfield} demonstrates deformation fields that warps from reference frame where there is no deformation.
 
 \begin{figure}[h!]
     \centering
@@ -117,15 +114,22 @@ After solving the equation, $\bm{u_n}(\bm{x}), x \in \Omega$ gives a group of de
     \label{fig:deformationfield}
 \end{figure}
 
+Applying PCA on deformations trains dense deformable shape model:
+\begin{equation*}
+    \bm{s_p}=\bm{\bar{s}} + \bm{U}_s\bm{p}
+\end{equation*}
+where $\bm{s_p}$ is deformed shape instance. $\bm{\bar{s}}$ is mean shape and $\bm{U}_s\bm{p}$ are eigenvectors with corresponding parameters $p$. Figure~\ref{fig:models} shows an instance of deformed shape and appearance model.
 \begin{figure}[h!]
     \centering
-        \includegraphics[width=0.5\textwidth]{resources/models}
+        \includegraphics[width=0.4\textwidth]{resources/models}
     \caption{Dense Deformable Model}
     \label{fig:models}
 \end{figure}
 
+\subsubsection{Drawing Annotation}
 
-\subsubsection{Computational Complexity?}
+The purpose of the shape descriptor $\bm{d_i}(x)$ generates probabilities for arbitrary points. If we sample points that are exactly pixel-wise integers, and normalise classification value, we can visualise a SVS as an image for example in figure~\ref{fig:svs}. In other words, our architecture will also works for images with landmarks similar to SVS visualisations like drawing. Assuming the intensity of a gray-scale image simulate the decision function, named $\bm{I_i}(x), x \in \Omega, i \in \{1,...F\}$. But in this situation, pixels at image space are discontinued, so $x$ is constrained to be integer and within the view window of size $N\times M$.
+
 
 
 \clearpage
