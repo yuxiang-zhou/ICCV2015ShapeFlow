@@ -105,7 +105,24 @@ Term~\eqref{eq:costfunc} state the shape constancy where points having similar c
 Part~\eqref{eq:lowrank} applies constrain on low rank trajectory basis states in section~\ref{sec:trabasis}.
 The objective cost function has two free parameters $u$ and $v$, so we performs alternating minimisation. The equation can be solved using thresholding scheme as used in \cite{?} after linearisation of image functions. The minimisation can be speed up by paralleling the minimisation for every spatial-temporal point $(x;n), x \in \Omega, n \in {1,...F}$ independently.
 
-After solving the equation, $\bm{u_n}(\bm{x}), x \in \Omega$ gives a group of dense deformations that registering every decision functions in the shape sequence to reference frame e.g. $\bm{u_1}(\bm{x})$ registers decision function $\bm{d_1}(\bm{x})$ to the reference frame. Applying PCA on deformations gives dense deformable shape model.
+After solving the equation, $\bm{u_n}(\bm{x}), x \in \Omega$ gives a group of deformation fields that registering every decision functions in the shape sequence to reference frame e.g. $\bm{u_1}(\bm{x})$ registers decision function $\bm{d_1}(\bm{x})$ to the reference frame. Applying PCA on deformations gives dense deformable shape model:
+\begin{equation*}
+    \bm{s_p}=\bm{\bar{s}} + \bm{U}_s\bm{p}
+\end{equation*}
+
+\begin{figure}[h!]
+    \centering
+        \includegraphics[width=0.5\textwidth]{resources/df}
+    \caption{Deformation field built}
+    \label{fig:deformationfield}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+        \includegraphics[width=0.5\textwidth]{resources/models}
+    \caption{Dense Deformable Model}
+    \label{fig:models}
+\end{figure}
 
 
 \subsubsection{Computational Complexity?}
