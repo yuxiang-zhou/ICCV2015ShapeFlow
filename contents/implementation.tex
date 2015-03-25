@@ -7,14 +7,16 @@
     \label{fig:archi}
 \end{figure}
 
-Deformable models is wildly used for object detection, localization, recognition and tracking while training a deformable model with good generalisation requires tremendous amount of carefully annotated data, which is extremely time consuming. Even more, annotated data normally requires same numbers of landmarks for one object category in every training data that exacerbated the cost of manual annotation. 
+Deformable models are widely used for object detection, localization, recognition and tracking while training a deformable model with good generalisation requires tremendous amount of carefully annotated data, which is extremely time consuming. Even more, annotated data of a specific object category typically requires same numbers of landmarks for every training sample, making the annotation procedure significantly complex where corrext menual annotation of landmarks is impossible in various object classes e.g. ears.
 
-In addition, in contrast with sparse landmarks, dense shape reveals more nuanced structure. However, there is, to the best of our knowledge, no available densely annotated data set.
+Despite the fact that that vast majority of existing methods are based on a sparse shape representation, dense shape representation reveals more nuanced structure in terms of [todo: explain].
 
-Our research proposed an architecture of accepting various annotations and structuring deformable model without using landmarks. Moreover, we proposed a new method of annotating data which is drawing. The architecture contains two major modules. The first modules handles inconsistent annotation set by converting to landmark independent shape discriminator. While the other module produces shape flow on object discriminators to generate dense flow transformations in shape space following by robust PCA\cite{?} to generate deformable model. In this section, we present the entire architectures, design decision and algorithms.
+We propose a novel framework for building deformable models that does not require any consistent set of annotated landmarks and is based on dense shape representation. Our method only requires a set of point or curve annotation that does not need to be consistent over different training samples.
+
+It combines NICP, SVS representation and multi-image subspace flow in an effective framework that has significant descriptive power. The pipeline contains two major modules. The first module handles inconsistent annotation set by converting to landmark independent shape discriminator. While the other module produces shape flow on object discriminators to generate dense flow transformations in shape space following by robust PCA\cite{?} to generate deformable model. In this section, we present the entire architectures, design decision and algorithms.
 
 \subsection{Sparse Landmarks Pre-Processing}
-The first module is to bridge the gap that training data has to have consistent number of landmarks. Currently existing annotated databases contains large variety on landmarking, which largely restricted model training to stick to one data set also make evaluation challenging on using distinct data set. We proposed an algorithm that utilizes a combination of Iterative Closest Point and Support Vector Shape for pre-processing before building the model.
+The first module is to bridge the gap that training data has to have consistent number of landmarks. Currently existing annotated databases contains large variety on landmarking, which largely restricted model training to stick to one data set also make evaluation challenging on using distinct data set. We propose an algorithm that utilizes a combination of Iterative Closest Point and Support Vector Shape for pre-processing before building the model.
 
 \subsubsection{Model Invariance}
 The model built should only captures deformations that specific to the object, transformations thus rotation, translation and scaling are processed to be invariant to the model\cite{?}. ICP is applied to align sparse landmarks. ICP is a perfect choice to align various point clouds with no restriction on shape dimension or quantity.
@@ -129,6 +131,8 @@ where $\bm{s_p}$ is deformed shape instance. $\bm{\bar{s}}$ is mean shape and $\
 \subsubsection{Drawing Annotation}
 
 The purpose of the shape descriptor $\bm{d_i}(x)$ generates probabilities for arbitrary points. If we sample points that are exactly pixel-wise integers, and normalise classification value, we can visualise a SVS as an image for example in figure~\ref{fig:svs}. In other words, our architecture will also works for images with landmarks similar to SVS visualisations like drawing. Assuming the intensity of a gray-scale image simulate the decision function, named $\bm{I_i}(x), x \in \Omega, i \in \{1,...F\}$. But in this situation, pixels at image space are discontinued, so $x$ is constrained to be integer and within the view window of size $N\times M$.
+
+
 
 
 
