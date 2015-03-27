@@ -11,22 +11,26 @@ Deformable models are widely used for object detection, localization, recognitio
 
 Despite the fact that that vast majority of existing methods are based on a sparse shape representation, dense shape representation reveals more nuanced structure in terms of [todo: explain].
 
-We propose a novel framework for building deformable models that does not require any consistent set of annotated landmarks and is based on dense shape representation. Our method only requires a set of point or curve annotation that does not need to be consistent over different training samples.
+We propose a novel framework for building deformable models that does not require any consistent set of annotated landmarks and is based on dense shape representation. Our method only requires a set of point or curve annotation that does not need to be consistent over different training samples. It combines NICP, SVS representation and multi-image subspace flow in an effective framework that has significant descriptive power.
 
-It combines NICP, SVS representation and multi-image subspace flow in an effective framework that has significant descriptive power. The pipeline contains two major modules. The first module handles inconsistent annotation set by converting to landmark independent shape discriminator. While the other module produces shape flow on object discriminators to generate dense flow transformations in shape space following by robust PCA\cite{?} to generate deformable model. In this section, we present the entire architectures, design decision and algorithms.
+The proposed pipeline is depicted in Figure .... It takes as input a set of training images of an object class, along with point and/or curve annotations. Its first step is the application of ICP to achieve an initial alignment of the training images. Next, the shapes that correspond to the training data are consistently represented using multichannel SVS. These are then fed into a multi-image subspace flow estimation that establishes dense correspondences between all shapes of the training set. In order for the flow estimation to be accurate and exploit the correlation across the different training shapes, it utilises a correspondence basis that is built on sparse correspondences given by Nonrigid ICP alignment of the annotated data. Finally, the dense correspondences that are yielded by the optical flow serve as automatic dense landmarks and are used by a dense AAM training and fitting procedure. The following sections discuss in more detail the steps of the proposed pipeline.
 
-\subsection{Sparse Landmarks Pre-Processing}
+
+%two major modules. The first module handles inconsistent annotation set by converting to landmark independent shape discriminator. While the other module produces shape flow on object discriminators to generate dense flow transformations in shape space following by robust PCA\cite{?} to generate deformable model. In this section, we present the entire architectures, design decision and algorithms.
+
+\subsection{Shape Representation Without Consistent Annotations}
 The first module is to bridge the gap that training data has to have consistent number of landmarks. Currently existing annotated databases contains large variety on landmarking, which largely restricted model training to stick to one data set also make evaluation challenging on using distinct data set. We propose an algorithm that utilizes a combination of Iterative Closest Point and Support Vector Shape for pre-processing before building the model.
 
-\subsubsection{Model Invariance}
+\subsubsection{Initial Alignment of the Training Images}
+
 The model built should only captures deformations that specific to the object, transformations thus rotation, translation and scaling are processed to be invariant to the model\cite{?}. ICP is applied to align sparse landmarks. ICP is a perfect choice to align various point clouds with no restriction on shape dimension or quantity.
 
-\subsubsection{Landmark Inconsistency}
-Ordinarily, construction of deformable model requires training data set having consistent number of landmarks. But unavoidable changes has to be made before applying same algorithm on diverse annotated data set. 
+\subsubsection{Multichannel Support Vector Shape Representation}
+Ordinarily, construction of deformable model requires training data set having consistent number of landmarks. But unavoidable changes has to be made before applying same algorithm on diverse annotated data set.
 
-We proposed a method based on Support Vector Shape (SVS)\cite{?}, which is a decision function trained on shapes using v-SVM with RBF kernel. There are several advantages of representing shapes as classifier: general enough to apply on 2D or 3D data, depending on only sparse points and robust against noise, missing data and artifacts. 
+We proposed a method based on Support Vector Shape (SVS)\cite{?}, which is a decision function trained on shapes using v-SVM with RBF kernel. There are several advantages of representing shapes as classifier: general enough to apply on 2D or 3D data, depending on only sparse points and robust against noise, missing data and artifacts.
 
-Assuming input training images are all differently annotated of same object category. Initially, negative points get randomly sampled around sparse landmarks while annotated landmarks are positive points. Since the number of positive points are far less that the that of negative samples, landmarks are assigned considerably larger weight that $N_p \times W_p=N_n \times W_n$ where $N_p, N_n$ are number of positive/negative points and $W_p, W_n$ are weights of positive/negative samples. 
+Assuming input training images are all differently annotated of same object category. Initially, negative points get randomly sampled around sparse landmarks while annotated landmarks are positive points. Since the number of positive points are far less that the that of negative samples, landmarks are assigned considerably larger weight that $N_p \times W_p=N_n \times W_n$ where $N_p, N_n$ are number of positive/negative points and $W_p, W_n$ are weights of positive/negative samples.
 
 SVM with RBF kernel function maps any numbers of data points onto an infinite-dimensional space where positive and negative points are linearly separable, hence classification boundary on 2D space represents the actual shape. The decision function for SVM shown below:
 \begin{equation} \label{eq:decisionfunc}
@@ -34,7 +38,7 @@ SVM with RBF kernel function maps any numbers of data points onto an infinite-di
 \end{equation}
 where $x_i^*$ are support vectors and $k(x_i^*,x)$ are Gaussian Radial Basis Function kernel $k(x_i^*,x)=exp(-\lambda \|x_i^*,x\|^2)$.
 
-Figure~\ref{fig:build_svs} demonstrate trained shape descriptor using SVM and the final result is irrelevant to landmark amount. Figure~\ref{svs} displays the visualization of the decision function where brighter colour means corresponding pixels belongs to original shape with higher possibility. It is a very generalized shape discriminator that blends inconsistent landmark annotations into decision functions. 
+Figure~\ref{fig:build_svs} demonstrate trained shape descriptor using SVM and the final result is irrelevant to landmark amount. Figure~\ref{svs} displays the visualization of the decision function where brighter colour means corresponding pixels belongs to original shape with higher possibility. It is a very generalized shape discriminator that blends inconsistent landmark annotations into decision functions.
 
 
 \begin{figure}[h!]
@@ -55,8 +59,6 @@ Figure~\ref{fig:build_svs} demonstrate trained shape descriptor using SVM and th
 
 
 
-
-
 % ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -64,8 +66,8 @@ Figure~\ref{fig:build_svs} demonstrate trained shape descriptor using SVM and th
 
 With decision functions built from training data, the second module designed to register all decision functions to mean shape, we named it Shape Flow. Shape Flow is introduced based on optical flow, which generate pixel-wise correspondences for video sequences. Optical flow works for video sequences based on assumptions e.g. brightness constancy and motion smoothness. However, in terms of shapes, neither constant illumination nor continuous motion exists in sequence of shapes as all training data are independent. Thus we proposed shape flow with subspace constrains introduced from trajectories.
 
-\subsubsection{Trajectory Basis} \label{sec:trabasis}
-Since shapes from training data set having completely no motion smoothness, it is of importance to contain constrains in optimization on how pixels moves from one shape frame to another. We constrain the optimization on trajectory subspace.
+\subsubsection{Non-rigid ICP and Correspondence Basis Creation} \label{sec:trabasis}
+Since shapes from training data set having completely no motion smoothness, it is of importance to contain constrains in optimization on how pixels moves from one shape frame to another. We constrain the optimization on correspondence subspace.
 We supervise trajectories from sparse landmarks. To begin with, Non-rigid Iterative Closest Point (NICP)\cite{?} applied on sparse annotated points. NICP deforms target points to fit the template iteratively until all points on target deformed to match points on template. Performs the algorithm for all training data will get an implicit point correlation between sparse shapes.
 
 Since optical flow pixel-wise frame registration, the trajectory basis build should also matches the dimension, which is dense on shapes with trajectory length depends on number of training data. With correspondences produced after applying NICP, Thin-Plate Spline (TPS)\cite{?} transformations are utilized to warp every shape planes to template plane thereby generates an implicit dense shape registering. For all dense transformations $\bm{u_n}(\bm{x}), n \in \{1,...,F\}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
@@ -94,7 +96,7 @@ where $\bm{q_i}(n)$ are low rank components with $R \ll 2F$ and $\bm{v_i}(x)$ we
 \end{equation}
 Although optical flow on shapes made under the assumption that objects motion are smooth, the low rank constrain on trajectory basis recovered the hypothesis.
 
-\subsubsection{Algorithm}
+\subsubsection{Multi-image Subspace Flow}
 To register all decision functions to template shape, decision function $d_i(\bm{x}), i \in {1,...,F}$ are grouped into one sequence before applying flow algorithm. The objective cost function we would like to minimise is:
 \begin{align}
     \operatorname*{arg\,min}_{\bm{u_n}(\bm{x}), \bm{v}}&=\alpha \int_{\Omega}\sum_{n=1}^F|\bm{d_n}(x+\bm{u_n}(x))-\bm{d_0}(x)\| dx  \label{eq:costfunc}\\
@@ -136,4 +138,4 @@ The purpose of the shape descriptor $\bm{d_i}(x)$ generates probabilities for ar
 
 
 
-\clearpage
+\clearpage 
