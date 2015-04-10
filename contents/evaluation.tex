@@ -1,16 +1,78 @@
-To evaluate the quality of model, 
-\subsection{Models Qualiative Analysis}
+We perform evaluation of dense deformable model
+\subsection{Models Qualitative Analysis}
+
 
 \subsubsection{Model Compactness}
 
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.2\textwidth}
+            \includegraphics[width=\textwidth]{resources/aam_ear_eigen_value}
+        \caption{AAM Principle Components Contribution}
+        \label{}
+    \end{subfigure}
+    ~~
+    \begin{subfigure}[b]{0.2\textwidth}
+            \includegraphics[width=\textwidth]{resources/of_ear_eigen_value}
+        \caption{Shape Flow Principle Components Contribution}
+    \end{subfigure}
+    \caption{Principle Components Contribution}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.1\textwidth]{resources/landmark_drifting}
+    \caption{Landmark Drifting}
+\end{figure}
+
 \subsubsection{Shape Reconstruction}
 
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.2\textwidth}
+            \includegraphics[width=\textwidth]{resources/warp_reconstruction_error}
+        \caption{Warp Reconstruction Errors}
+        \label{}
+    \end{subfigure}
+    ~~
+    \begin{subfigure}[b]{0.2\textwidth}
+            \includegraphics[width=\textwidth]{resources/sparse_reconstruction_error}
+        \caption{Spare Reconstruction Errors}
+    \end{subfigure}
+    \caption{Reconstruction Errors}
+\end{figure}
+
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.2\textwidth}
+            \includegraphics[width=\textwidth]{resources/warp_projecting_error_aam}
+        \caption{AAM Warp Projecting Errors}
+        \label{}
+    \end{subfigure}
+    ~~
+    \begin{subfigure}[b]{0.2\textwidth}
+            \includegraphics[width=\textwidth]{resources/warp_projecting_error_of}
+        \caption{Shape Flow Warp Projecting Errors}
+    \end{subfigure}
+    \caption{Projecting Errors}
+\end{figure}
 
 
 \subsection{Evaluation on Fitting}
 
 \subsubsection{Using Sparse Point Annotation}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{resources/face_digo_mc}
+    \caption{CED Fitting Results on Face}
+\end{figure}
 
 \subsubsection{Using Drawing Annotation}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{resources/ear_digo_mc}
+    \caption{CED Fitting Results on Ear}
+\end{figure}
 
 \clearpage
