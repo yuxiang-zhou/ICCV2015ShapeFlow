@@ -1,23 +1,26 @@
-Uses Abstract from Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder with some modification. 
-Deformable objects are everywhere. Faces, ears, bodies,
-bottles etc. Recently, there has been a wealth of research
-on training deformable models for object detection,
-part localization and recognition using annotated data. In
-order to train deformable models with good generalization
-ability, a large amount of carefully annotated data is required,
-which is a highly time consuming and costly task.
-We propose the first - to the best of our knowledge - method
-for construction of dense deformable models using images
-captured in totally unconstrained conditions, recently
-referred to as “in-the-wild”. The only requirements of the
-method are drawings of image features. The object detector can be as simple as the
-Viola-Jones algorithm (e.g. even the cheapest digital camera
-features a robust face detector). The 2D shape model
-can be created by using only a few shape examples with deformations.
-In our experiments on facial deformable models,
-we show that the proposed automatically built model
-not only performs well, but also outperforms discriminative
-models trained on carefully annotated data. To the best of
-our knowledge, this is the first time it is shown that an automatically
-constructed model can perform as well as methods
-trained directly on annotated data.
+% Uses Abstract from Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder with some modification. 
+% Deformable objects are everywhere. Faces, ears, bodies,
+% bottles etc. Recently, there has been a wealth of research
+% on training deformable models for object detection,
+% part localization and recognition using annotated data. In
+% order to train deformable models with good generalization
+% ability, a large amount of carefully annotated data is required,
+% which is a highly time consuming and costly task.
+
+% We propose the first - to the best of our knowledge - method
+% for construction of dense deformable models using images
+% captured in totally unconstrained conditions, recently
+% referred to as “in-the-wild”. The only requirements of the
+% method are drawings of image features. The object detector can be as simple as the
+% Viola-Jones algorithm (e.g. even the cheapest digital camera
+% features a robust face detector). The 2D shape model
+% can be created by using only a few shape examples with deformations.
+% In our experiments on facial deformable models,
+% we show that the proposed automatically built model
+% not only performs well, but also outperforms discriminative
+% models trained on carefully annotated data. To the best of
+% our knowledge, this is the first time it is shown that an automatically
+% constructed model can perform as well as methods
+% trained directly on annotated data.
+
+Building and training deformable models of objects (e.g. faces, ears, bottles and cars) has  recently been widely researched for object detection, part localisation, fitting, recognition and tracking using manual annotated data. To train deformable models with satisfiable generalisation, large amount of carefully manual annotation is required. However, landmark annotation is extremely time consuming, work intensive and, most importantly, number of landmarks have to stay consistent for all training data while it is challenging to maintain the consistency or to avoid bias when annotating objects that having reach features like ears. We propose framework to handle training data with inconsistent annotation, build dense shape model and introduce effective curve annotation methods. In our experiment, we show building dense models trained with inconsistent annotation and trained with curve annotation improves performance of discriminative models trained on carefully annotated data.
