@@ -1,40 +1,12 @@
+Building and training deformable models of objects (e.g. faces, ears, bodies, bottles, vehicles etc.) has recently been widely researched for object detection, part localisation, fitting, recognition and tracking using manual annotated data. Shapes and appearances of majority of objects vary significantly from object instance. To illustrate, ears have complicated inner structures (e.g. helix, crus antihelicis, scapha, tragus, lobe etc.) which differs remarkably between ears and highly sensitive to intensity changes. Recently, we have witnessed a great
+progress in object detection, alignment and recognition. 
+
+To train deformable models with satisfiable generalisation, large amount of careful manual annotation is required. However, landmark annotation is extremely time consuming, work intensive and, most importantly, number of landmarks have to stay consistent for all training data while it is challenging to maintain the consistency or to avoid bias when annotating objects that having reach features. In ears, for example, large amount of landmarks required as the inner structure of ears are complex. To annotate an ear with clear contour, helix and cavum conchae, more than 50 landmarks are required. The inconsistency of ear features enhanced the difficulty of accurate annotation (e.g. Fossa Triangularies and Crus Helicis are optional feature of an ear also their visibility is highly sensitive to pose and illumination variation).
+To illustrate how much time consuming careful ear annotation is, according to our experience, a trained annotator may need an average of (TODO: experiment) minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about (TODO: experiment). Furthermore, personal issue, prior knowledge and circumstances can heavily bias the annotation accuracy thus second round correction might desired.
+
+We propose framework to handle training data with inconsistent annotation, build dense shape model and introduce effective curve annotation methods. In our experiment, we show building dense models trained with inconsistent annotation and trained with curve annotation improves performance of discriminative models trained on carefully annotated data.
+
 Uses Introductions from Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder.
-
-Many deformable objects exist everywhere around us.
-Some examples are the human face and body, animals, vehicles
-such as cars and motorcycles and objects of everyday
-use like tables, chairs etc. Most of these objects consist of
-different parts and appear in instances with great variance
-in shape and appearance. Thus, the concept of a deformable
-object refers to the deformation of both shape and appearance
-of an object. For example cars have parts (i.e. doors,
-windows, tires etc.) with significant changes in shape, size
-and texture. Furthermore, faces consist of parts (i.e. nose,
-eyes, mouth etc.) which not only vary with respect to shape
-and appearance, but can demonstrate a number of expressions
-due to muscles. Recently, we have witnessed a great
-progress in object detection, alignment and recognition.
-
-In order to train deformable models with good generalization
-ability, a large amount of carefully annotated data
-is needed. Developing useful datasets and benchmarks that
-can contribute in the progress of an application domain is
-a highly time consuming and costly procedure. It requires
-both careful selection of the images, so that they can model
-the vast amount of an object’s variability, and careful annotation
-of the various parts of the object (or landmarks).
-The amount of annotation that is required depends on both
-the object and the application. In faces, for example, where
-many landmark points are needed in tasks such as facial expression
-analysis, motion capture and expression transfer,
-usually more than 60 points are annotated \cite{?}.
-To illustrate how much time consuming careful face annotation
-is, according to our experience, a trained annotator
-may need an average of 8 minutes per image for the manual
-annotation of 68 landmarks1. This means that the annotation
-of 1000 images requires a total of about 130 hours2.
-Furthermore, fatigue can cause errors on the accuracy and
-consistency of annotations and they may require correction.
 
 In this paper, we deal with the problem of automatically
 constructing a robust deformable model using (1) a simple
