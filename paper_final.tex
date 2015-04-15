@@ -13,10 +13,9 @@
 % If you comment hyperref and then uncomment it, you should delete
 % egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
 % run, let it finish, and you should be clear).
-\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+%\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
 
-
-% \iccvfinalcopy % *** Uncomment this line for the final submission
+\iccvfinalcopy % *** Uncomment this line for the final submission
 
 \def\iccvPaperID{****} % *** Enter the ICCV Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
@@ -28,7 +27,7 @@
 %%%%%%%%% TITLE
 \input{contents/title}
 \maketitle
-% \thispagestyle{empty}
+\thispagestyle{empty}
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
@@ -53,11 +52,9 @@
 \section{Acknowledgement}
     \input{contents/ack}
 
-
 {\small
 \bibliographystyle{ieee}
-\bibliography{egbib}
+\bibliography{bib}
 }
-
 
 \end{document}
