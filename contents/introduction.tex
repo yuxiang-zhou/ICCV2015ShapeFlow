@@ -1,24 +1,59 @@
-Building and training deformable models of objects (e.g. faces, ears, bodies, bottles, vehicles etc.) has recently been widely researched for object detection, part localisation, fitting, recognition and tracking using manual annotated data. Shapes and appearances of majority of objects vary significantly from object instance. To illustrate, ears have complicated inner structures (e.g. helix, crus antihelicis, scapha, tragus, lobe etc.) which differs remarkably between ears and highly sensitive to intensity changes. Recently, we have witnessed a great
-progress in object detection, alignment and recognition. 
+Building and training deformable models of objects (e.g. faces, ears, bodies, bottles, vehicles etc.) has recently been widely researched for object detection, part localisation, fitting, recognition and tracking using manual annotated data. Shapes and appearances of majority of objects vary significantly from object instance. To illustrate, ears have complicated inner structures (e.g. helix, crus antihelicis, scapha, tragus, lobe etc.) which differs remarkably between ears and highly sensitive to intensity changes. Recently, we have witnessed a great progress in object detection, alignment and recognition. 
 
 To train deformable models with satisfiable generalisation, large amount of careful manual annotation is required. However, landmark annotation is extremely time consuming, work intensive and, most importantly, number of landmarks have to stay consistent for all training data while it is challenging to maintain the consistency or to avoid bias when annotating objects that having reach features. In ears, for example, large amount of landmarks required as the inner structure of ears are complex. To annotate an ear with clear contour, helix and cavum conchae, more than 50 landmarks are required. The inconsistency of ear features enhanced the difficulty of accurate annotation (e.g. Fossa Triangularies and Crus Helicis are optional feature of an ear also their visibility is highly sensitive to pose and illumination variation).
 To illustrate how much time consuming careful ear annotation is, according to our experience, a trained annotator may need an average of (TODO: experiment) minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about (TODO: experiment). Furthermore, personal issue, prior knowledge and circumstances can heavily bias the annotation accuracy thus second round correction might desired.
 
-We propose framework to handle training data with inconsistent annotation, build dense shape model and introduce effective curve annotation methods. In our experiment, we show building dense models trained with inconsistent annotation and trained with curve annotation improves performance of discriminative models trained on carefully annotated data.
+We propose a framework to (1) construct SDMs using training data with inconsistent annotation, (2) introduce highly effective curve annotation which tremendously reduces manual work overload but maintains same performance level against state-of-the-art SDMs and (3) build dense correspondent SDMs with shape flow. 
 
-Uses Introductions from Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder.
 
-In this paper, we deal with the problem of automatically
-constructing a robust deformable model using (1) a simple
-bounding box object detector and (2) a shape by means of
-a Point Distribution Model (PDM). The detector can be as
+% Back Ground
+The two most closely related works to the proposed
+method are the automatic construction of Active Appearance
+Models (AAMs) in \cite{?} and the so-called RASL
+methodology in \cite{?} for person-specific face alignment.
+There are two main differences between our framework
+and \cite{?}. (1) We use a predefined statistical shape model
+instead of trying to find both the shape and appearance models.
+We believe that with the current available optimization
+techniques, it is extremely difficult to simultaneously optimize
+for both the texture and shape parameters. (2) We
+employ the robust component analysis of \cite{?} for the appearance
+which deals with outliers. Thus, even though
+our method is similar in concept to \cite{?}, these two differences
+make the problem feasible to solve. In particular, the
+methodology in \cite{?} fails to create a generic model even in
+controlled recording conditions, due to extremely high dimensionality
+of the parameters to be found and to the sensitivity
+of the subspace method to outliers. This was probably
+one of the reasons why the authors demonstrate very
+limited and only person-specific experiments. Furthermore,
+our methodology bypasses some of the limitations of \cite{?},
+which requires the presence of only one low-rank subspace,
+hence it has been shown to work only for the case of congealing
+images of a single person. Finally, we argue that
+in order for an automatically constructed AAM methodology
+to be robust to both within-class and out-of-class outliers4,
+which cannot be avoided in totally unsupervised setting
+statistical component analysis techniques should be
+employed \cite{?}. We summarize our contributions as follows:
+
+% contribution summerize
+
+In our experiment, we show that building robust dense models trained with inconsistent annotation and trained with curve annotation improves performance of discriminative models trained on carefully annotated data including ears, faces, bottles, (cars ?) and bodies. Evaluation methods and choices are described in details.
+
+Uses Introductions from Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder below.
+
+
+The detector can be as
 simple as the Viola-Jones object detector \cite{?}
 3 which returns
 only a bounding box of a detected object. Such detectors
 are widely employed in commercial products (e.g.
 even the cheapest digital camera has a robust face detector).
 Other detectors that can be used are efficient subwindow
-search \cite{?}. The
+search \cite{?}. 
+
+The
 annotations that are needed to train the object detector can
 be acquired very quickly, since only a bounding box containing the object is required. Specifically, after selecting
 the images that are going to be used, the annotation procedure
@@ -48,41 +83,41 @@ a model is not straightforward. Our methodology
 differs from these works because we employ an explicit texture
 model which is learned through the process.
 
-The two most closely related works to the proposed
-method are the automatic construction of Active Appearance
-Models (AAMs) in \cite{?} and the so-called RASL
-methodology in \cite{?} for person-specific face alignment.
-There are two main differences between our framework
-and \cite{?}. (1) We use a predefined statistical shape model
-instead of trying to find both the shape and appearance models.
-We believe that with the current available optimization
-techniques, it is extremely difficult to simultaneously optimize
-for both the texture and shape parameters. (2) We
-employ the robust component analysis of \cite{?} for the appearance
-which deals with outliers. Thus, even though
-our method is similar in concept to \cite{?}, these two differences
-make the problem feasible to solve. In particular, the
-methodology in \cite{?} fails to create a generic model even in
-controlled recording conditions, due to extremely high dimensionality
-of the parameters to be found and to the sensitivity
-of the subspace method to outliers. This was probably
-one of the reasons why the authors demonstrate very
-limited and only person-specific experiments. Furthermore,
-our methodology bypasses some of the limitations of \cite{?},
-which requires the presence of only one low-rank subspace,
-hence it has been shown to work only for the case of congealing
-images of a single person. Finally, we argue that
-in order for an automatically constructed AAM methodology
-to be robust to both within-class and out-of-class outliers4,
-which cannot be avoided in totally unsupervised settings,
-statistical component analysis techniques should be
-employed \cite{?}. We summarize our contributions as follows:
+% The two most closely related works to the proposed
+% method are the automatic construction of Active Appearance
+% Models (AAMs) in \cite{?} and the so-called RASL
+% methodology in \cite{?} for person-specific face alignment.
+% There are two main differences between our framework
+% and \cite{?}. (1) We use a predefined statistical shape model
+% instead of trying to find both the shape and appearance models.
+% We believe that with the current available optimization
+% techniques, it is extremely difficult to simultaneously optimize
+% for both the texture and shape parameters. (2) We
+% employ the robust component analysis of \cite{?} for the appearance
+% which deals with outliers. Thus, even though
+% our method is similar in concept to \cite{?}, these two differences
+% make the problem feasible to solve. In particular, the
+% methodology in \cite{?} fails to create a generic model even in
+% controlled recording conditions, due to extremely high dimensionality
+% of the parameters to be found and to the sensitivity
+% of the subspace method to outliers. This was probably
+% one of the reasons why the authors demonstrate very
+% limited and only person-specific experiments. Furthermore,
+% our methodology bypasses some of the limitations of \cite{?},
+% which requires the presence of only one low-rank subspace,
+% hence it has been shown to work only for the case of congealing
+% images of a single person. Finally, we argue that
+% in order for an automatically constructed AAM methodolo
+% to be robust to both within-class and out-of-class outliers4,
+% which cannot be avoided in totally unsupervised setti
+% statistical component analysis techniques should be
+% employed \cite{?}. We summarize our contributions as follows:
 
 
-We present experimental results on the task of face alignment.
-We choose this application because there exist many
-in-the-wild facial databases with a large number of images
-and annotated landmarks, hence solid quantitative evaluations
-can be performed.
+% We present experimental results on the task of face alignment.
+% We choose this application because there exist many
+% in-the-wild facial databases with a large number of images
+% and annotated landmarks, hence solid quantitative evaluations
+% can be performed.
 
 \clearpage
