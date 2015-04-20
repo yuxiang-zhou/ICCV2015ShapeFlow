@@ -1,59 +1,148 @@
-Building and training deformable models of objects (e.g. faces, ears, bodies, bottles, vehicles etc.) has recently been widely researched for object detection, part localisation, fitting, recognition and tracking using manual annotated data. Shapes and appearances of majority of objects vary significantly from object instance. To illustrate, ears have complicated inner structures (e.g. helix, crus antihelicis, scapha, tragus, lobe etc.) which differs remarkably between ears and highly sensitive to intensity changes. Recently, we have witnessed a great progress in object detection, alignment and recognition. 
+% Building and training deformable models of objects (e.g. faces, ears, bodies, bottles, vehicles etc.) has recently been widely researched for object detection, part localisation, fitting, recognition and tracking using manual annotated data. Shapes and appearances of majority of objects vary significantly from object instance. To illustrate, ears have complicated inner structures (e.g. helix, crus antihelicis, scapha, tragus, lobe etc.) which differs remarkably between ears and highly sensitive to intensity changes. Recently, we have witnessed a great progress in object detection, alignment and recognition. 
 
-To train deformable models with satisfiable generalisation, large amount of careful manual annotation is required. However, landmark annotation is extremely time consuming, work intensive and, most importantly, number of landmarks have to stay consistent for all training data while it is challenging to maintain the consistency or to avoid bias when annotating objects that having reach features. In ears, for example, large amount of landmarks required as the inner structure of ears are complex. To annotate an ear with clear contour, helix and cavum conchae, more than 50 landmarks are required. The inconsistency of ear features enhanced the difficulty of accurate annotation (e.g. Fossa Triangularies and Crus Helicis are optional feature of an ear also their visibility is highly sensitive to pose and illumination variation).
-To illustrate how much time consuming careful ear annotation is, according to our experience, a trained annotator may need an average of (TODO: experiment) minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about (TODO: experiment). Furthermore, personal issue, prior knowledge and circumstances can heavily bias the annotation accuracy thus second round correction might desired.
+% To train deformable models with satisfiable generalisation, large amount of careful manual annotation is required. However, landmark annotation is extremely time consuming, work intensive and, most importantly, number of landmarks have to stay consistent for all training data while it is challenging to maintain the consistency or to avoid bias when annotating objects that having reach features. In ears, for example, large amount of landmarks required as the inner structure of ears are complex. To annotate an ear with clear contour, helix and cavum conchae, more than 50 landmarks are required. The inconsistency of ear features enhanced the difficulty of accurate annotation (e.g. Fossa Triangularies and Crus Helicis are optional feature of an ear also their visibility is highly sensitive to pose and illumination variation).
+% To illustrate how much time consuming careful ear annotation is, according to our experience, a trained annotator may need an average of (TODO: experiment) minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about (TODO: experiment). Furthermore, personal issue, prior knowledge and circumstances can heavily bias the annotation accuracy thus second round correction might desired.
 
-We propose a framework to (1) construct SDMs using training data with inconsistent annotation, (2) introduce highly effective curve annotation which tremendously reduces manual work overload but maintains same performance level against state-of-the-art SDMs and (3) build dense correspondent SDMs with shape flow. 
+% We propose a framework to (1) construct SDMs using training data with inconsistent annotation, (2) introduce highly effective curve annotation which tremendously reduces manual work overload but maintains same performance level against state-of-the-art SDMs and (3) build dense correspondent SDMs with shape flow. 
 
-%(1)
-Annotated data of same objects can have various number of landmarks, \cite{?} shown faces have landmarks different in range 10+ to 70+. Building SDMs (e.g. Active Appearance Models), however, require training data are annotated consistently, for example, all faces have 68 landmarks, 6 landmarks for an eye and 9 for a nose \cite{?}. Such property of SDMs largely limited their application area like combining different dataset as one. We propose the pipeline with non-rigid alignment and support vector shape to blend landmarks into relatively consistent shape discriminator before building models.
+% %(1)
+% Annotated data of same objects can have various number of landmarks, \cite{?} shown faces have landmarks different in range 10+ to 70+. Building SDMs (e.g. Active Appearance Models), however, require training data are annotated consistently, for example, all faces have 68 landmarks, 6 landmarks for an eye and 9 for a nose \cite{?}. Such property of SDMs largely limited their application area like combining different dataset as one. We propose the pipeline with non-rigid alignment and support vector shape to blend landmarks into relatively consistent shape discriminator before building models.
 
-%(2)
-Due to the fact that manual annotation is a rather costly and labour-intensive procedure, unsupervised and semi supervised learning of models for the tasks of alignment, landmark localization, tracking and recognition has attracted considerable attention \cite{?}. As our proposed framework are available to handle landmarks with inconsistency, it leads to a more efficient, convenient, unbiased and simple annotation methods - curve annotation. 
+% %(2)
+% Due to the fact that manual annotation is a rather costly and labour-intensive procedure, unsupervised and semi supervised learning of models for the tasks of alignment, landmark localization, tracking and recognition has attracted considerable attention \cite{?}. As our proposed framework are available to handle landmarks with inconsistency, it leads to a more efficient, convenient, unbiased and simple annotation methods - curve annotation. 
 
-%(3)
-To build dense correspondence between independent shapes, we apply optical flow on shapes with low rank constrains, so we name it shape flow. Optical flow is originally applied to video sequences that several assumptions holds, illumination consistency and motion smoothness, while shapes having no motion smoothness completely as all training data are independent. Low rank constrain plays important role to simulate motion smoothness assumption. 
+% %(3)
+% To build dense correspondence between independent shapes, we apply optical flow on shapes with low rank constrains, so we name it shape flow. Optical flow is originally applied to video sequences that several assumptions holds, illumination consistency and motion smoothness, while shapes having no motion smoothness completely as all training data are independent. Low rank constrain plays important role to simulate motion smoothness assumption. 
 
 
-% Back Ground, uses Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder
-The two most closely related works to the proposed
-method are the automatic construction of Active Appearance
-Models (AAMs) in \cite{?} and the so-called RASL
-methodology in \cite{?} for person-specific face alignment.
-There are two main differences between our framework
-and \cite{?}. (1) We use a predefined statistical shape model
-instead of trying to find both the shape and appearance models.
-We believe that with the current available optimization
-techniques, it is extremely difficult to simultaneously optimize
-for both the texture and shape parameters. (2) We
-employ the robust component analysis of \cite{?} for the appearance
-which deals with outliers. Thus, even though
-our method is similar in concept to \cite{?}, these two differences
-make the problem feasible to solve. In particular, the
-methodology in \cite{?} fails to create a generic model even in
-controlled recording conditions, due to extremely high dimensionality
-of the parameters to be found and to the sensitivity
-of the subspace method to outliers. This was probably
-one of the reasons why the authors demonstrate very
-limited and only person-specific experiments. Furthermore,
-our methodology bypasses some of the limitations of \cite{?},
-which requires the presence of only one low-rank subspace,
-hence it has been shown to work only for the case of congealing
-images of a single person. Finally, we argue that
-in order for an automatically constructed AAM methodology
-to be robust to both within-class and out-of-class outliers4,
-which cannot be avoided in totally unsupervised setting
-statistical component analysis techniques should be
-employed \cite{?}. 
+% % Back Ground, uses Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder
+% The two most closely related works to the proposed
+% method are the automatic construction of Active Appearance
+% Models (AAMs) in \cite{?} and the so-called RASL
+% methodology in \cite{?} for person-specific face alignment.
+% There are two main differences between our framework
+% and \cite{?}. (1) We use a predefined statistical shape model
+% instead of trying to find both the shape and appearance models.
+% We believe that with the current available optimization
+% techniques, it is extremely difficult to simultaneously optimize
+% for both the texture and shape parameters. (2) We
+% employ the robust component analysis of \cite{?} for the appearance
+% which deals with outliers. Thus, even though
+% our method is similar in concept to \cite{?}, these two differences
+% make the problem feasible to solve. In particular, the
+% methodology in \cite{?} fails to create a generic model even in
+% controlled recording conditions, due to extremely high dimensionality
+% of the parameters to be found and to the sensitivity
+% of the subspace method to outliers. This was probably
+% one of the reasons why the authors demonstrate very
+% limited and only person-specific experiments. Furthermore,
+% our methodology bypasses some of the limitations of \cite{?},
+% which requires the presence of only one low-rank subspace,
+% hence it has been shown to work only for the case of congealing
+% images of a single person. Finally, we argue that
+% in order for an automatically constructed AAM methodology
+% to be robust to both within-class and out-of-class outliers4,
+% which cannot be avoided in totally unsupervised setting
+% statistical component analysis techniques should be
+% employed \cite{?}. 
 
-We summarize our contributions as follows:
+% We summarize our contributions as follows:
+% \begin{itemize}
+%   \item Constructing SDMs using training data with inconsistent annotation.
+%   \item Introduce highly effective curve annotation which tremendously reduces manual work overload but maintains same performance level against state-of-the-art SDMs.
+%   \item Building dense correspondent SDMs with shape flow
+% \end{itemize}
+
+% In our experiment, we show that building robust dense models trained with inconsistent annotation and trained with curve annotation improves performance of discriminative models trained on carefully annotated data including ears, faces, bottles, (cars ?) and bodies. Evaluation methods and choices are described in details.
+
+
+% \clearpage
+
+
+Building and fitting statistical deformable models of objects is a well-studied and popular area in the intersection of computer vision and machine learning [..]. Recently, we have witnessed tremendous developments in building and fitting models of human face and body using images captured in unconstrained recording conditions, usually referred to as "in-the-wild" [..]. This is attributed to 
+\begin{itemize}
+
+\item the abundance of complex visual data, spread mostly through the internet via web services such as Youtube, Flickr and Google Images. The latter has led to the development of huge databases of "in-the-wild" images of human faces and bodies [..]. Equally important is the task of manual annotation of images with regards to face and body parts and that has been undertaken by several research teams [..].
+
+\item the development of powerful visual features, able to describe objects and its parts in a robust manner (e.g., Scale Invariant Feature Transforms (SIFT) [39], Histogram of Oriented Gradients (HoGs) [16] and recently Deep Convolutional Neural Networks [..]), as well as generative and discriminative methodologies for learning deformable models. 
+
+\end{itemize}
+
+There are two drawbacks on building deformable models that rely on landmarks 
+\begin{itemize}
+
+\item annotating with regards to consistent landmark annotation is extremely time consuming, laborious and labour intensive work [..], which usually can be performed by a trained person. Furthermore, for many objects it requires a highly skilled person to identify and annotate a set of images with regards to a consistent set of landmarks. For example human ears have very complicated inner structures (e.g. helix, crus antihelicis, scapha, tragus, lobe etc.) which differs remarkably between ears. Furthermore, 
+certain ear parts, such as  Fossa Triangularies and Crus Helicis, do not appear in all ears and  their visibility is highly sensitive to pose and illumination variation. Please see Fig... 
+
+\item the nature of many deformable objects do not allow to be consistently annotated with regards to a set of landmarks (e.g. bottles, fruits etc.). Also the boundary/outline of objects, such as faces, ears, body can be very difficultly annotated consistently. That is why many state-of-the-art opt to leave the boundary out for comparison [..]. An example is given in Fig.. The majority of the state-of-the-art methods for landmark-based deformable models [..] are not applicable for objects with no consistent set of landmarks. 
+
+\end{itemize}
+
+To illustrate how time consuming careful annotation of ears is we lay down our own experience. A trained annotator needs an average of (TODO: experiment) minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about (TODO: experiment). Furthermore,  training and fatigue largely influence the annotation accuracy. Hence, a second pass on the annotated data is, in many cases, necessary. Due to the fact that manual annotation is a rather costly and labour-intensive procedure, unsupervised learning of deformable models for the tasks of alignment has recently attracted some attention \cite{?}. Nevertheless, the method [..] requires a consistent set of shapes annotated with landmarks to perform deformable face congealing. Finally, since the problem of fully unsupervised discovery of the deformations of arbitrary objects is a very difficult and ill-posed problems the limited number of methods [..] that have been applied for the task cannot be applied for arbitrary collection of images collected "in-the-wild". 
+
+
+In this paper, we provide a solution for annotating an object with regards to its deformations that requires considerable less effort and in the same time can be used to define statistical deformations for objects without consistent set of landmarks. That is, we argue that it is better to annotate an object with regards to a set of continues lines that describe the shape of the object. An example is provided in Fig.. where the shape of the facial parts is annotated with continuous lines instead of a number of discrete landmarks. Similarly, the shape annotations for the ear, a bottle and human body is shown in Fig.. Annotating facial images by following this procedure takes only ... secs per image. Furthermore, these shapes can be automatically produced by recent methods that perform discriminative segmentation of objects. 
+
+Furthermore, we show that flow methods have mature enough so that it can be used to densely annotate the proposed shapes using simple, as well as more recent and robust shape representations methods [..].  In particular, to build dense correspondence between independent shapes, we apply optical flow on shapes with low rank constrains, so we name it shape flow. Optical flow is originally applied to video sequences that several assumptions holds, illumination consistency and motion smoothness, while shapes having no motion smoothness completely as all training data are independent. Low rank constrain plays important role to simulate motion smoothness assumption. 
+
+We show that this way dense correspondences between images can be established and dense Active Appearance Models (AAMs) can be build on top of that. We show that the proposed methodology even though not tailored to landmark localization can be applied for landmark localization achieving very good performance. Finally, we demonstrate the performance of the proposed methodology for describing objects that do not have consistent landmarks. To the best of our knowledge this is the first methodology which can create a dense statistical model for AAM which can operate in "in-the-wild" [..]. There are methods such as [..] and [..] but ...  
+
+
+In summarize the paper proposed ...:
 \begin{itemize}
   \item Constructing SDMs using training data with inconsistent annotation.
   \item Introduce highly effective curve annotation which tremendously reduces manual work overload but maintains same performance level against state-of-the-art SDMs.
   \item Building dense correspondent SDMs with shape flow
 \end{itemize}
 
-In our experiment, we show that building robust dense models trained with inconsistent annotation and trained with curve annotation improves performance of discriminative models trained on carefully annotated data including ears, faces, bottles, (cars ?) and bodies. Evaluation methods and choices are described in details.
+%In our experiment, we show that building robust dense models trained with inconsistent annotation and %trained with curve annotation improves performance of discriminative models trained on carefully %annotated data including ears, faces, bottles, (cars ?) and bodies. Evaluation methods and choices are %described in details.
+
+
+
+
+%We propose a framework to (1) construct SDMs using training data with inconsistent annotation, (2) %introduce highly effective curve annotation which tremendously reduces manual work overload but %maintains same performance level against state-of-the-art SDMs and (3) build dense correspondent SDMs %with shape flow. 
+
+%(1)
+%Annotated data of same objects can have various number of landmarks, \cite{?} shown faces have %landmarks different in range 10+ to 70+. Building SDMs (e.g. Active Appearance Models), however, %%require training data are annotated consistently, for example, all faces have 68 landmarks, 6 landmarks %for an eye and 9 for a nose \cite{?}. Such property of SDMs largely limited their application area like %combining different dataset as one. We propose the pipeline with non-rigid alignment and support vector %shape to blend landmarks into relatively consistent shape discriminator before building models.
+
+%(2)
+
+
+
+%(3)
+
+
+% Back Ground, uses Nondas' paper "Automatic Construction of Deformable Models In-The-Wild" as place holder
+%The two most closely related works to the proposed
+%method are the automatic construction of Active Appearance
+%Models (AAMs) in \cite{?} and the so-called RASL
+%methodology in \cite{?} for person-specific face alignment.
+%There are two main differences between our framework
+%and \cite{?}. (1) We use a predefined statistical shape model
+%instead of trying to find both the shape and appearance models.
+%We believe that with the current available optimization
+%techniques, it is extremely difficult to simultaneously optimize
+%for both the texture and shape parameters. (2) We
+%employ the robust component analysis of \cite{?} for the appearance
+%which deals with outliers. Thus, even though
+%our method is similar in concept to \cite{?}, these two differences
+%make the problem feasible to solve. In particular, the
+%methodology in \cite{?} fails to create a generic model even in
+%controlled recording conditions, due to extremely high dimensionality
+%of the parameters to be found and to the sensitivity
+%of the subspace method to outliers. This was probably
+%one of the reasons why the authors demonstrate very
+%limited and only person-specific experiments. Furthermore,
+%our methodology bypasses some of the limitations of \cite{?},
+%which requires the presence of only one low-rank subspace,
+%hence it has been shown to work only for the case of congealing
+%images of a single person. Finally, we argue that
+%in order for an automatically constructed AAM methodology
+%to be robust to both within-class and out-of-class outliers4,
+%which cannot be avoided in totally unsupervised setting
+%statistical component analysis techniques should be
+%employed \cite{?}. 
+
 
 
 \clearpage
