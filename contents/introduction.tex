@@ -59,52 +59,88 @@
 % \clearpage
 \begin{figure}[t!]
     \centering
-    \begin{subfigure}[b]{0.125\textwidth}
+    \begin{subfigure}[b]{0.145\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_0_0}
     \end{subfigure}
-    ~
-    \begin{subfigure}[b]{0.125\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.145\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_0_1}
     \end{subfigure}
-   	~
-    \begin{subfigure}[b]{0.125\textwidth}
+   	\hfill
+    \begin{subfigure}[b]{0.145\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_0_2}
     \end{subfigure}
     \\
-    \begin{subfigure}[b]{0.1\textwidth}
+    \begin{subfigure}[b]{0.075\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_1_0}
     \end{subfigure}
-    ~
-    \begin{subfigure}[b]{0.1\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.075\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_1_1}
     \end{subfigure}
-   	~
-    \begin{subfigure}[b]{0.1\textwidth}
+   	\hfill
+    \begin{subfigure}[b]{0.075\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_1_2}
     \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.075\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_1_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.075\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_1_4}
+    \end{subfigure}
+   	\hfill
+    \begin{subfigure}[b]{0.075\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_1_5}
+    \end{subfigure}
     \\
-    \begin{subfigure}[b]{0.08\textwidth}
+    \begin{subfigure}[b]{0.07\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_2_0}
     \end{subfigure}
-    ~
-    \begin{subfigure}[b]{0.08\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.07\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_2_1}
     \end{subfigure}
-   	~
-    \begin{subfigure}[b]{0.08\textwidth}
+   	\hfill
+    \begin{subfigure}[b]{0.07\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_2_2}
     \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.07\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_2_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.07\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_2_4}
+    \end{subfigure}
+   	\hfill
+    \begin{subfigure}[b]{0.07\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_2_5}
+    \end{subfigure}
     \\
-    \begin{subfigure}[b]{0.1\textwidth}
+    \begin{subfigure}[b]{0.075\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_3_0}
     \end{subfigure}
-    ~
-    \begin{subfigure}[b]{0.1\textwidth}
+    \hfill
+    \begin{subfigure}[b]{0.075\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_3_1}
     \end{subfigure}
-   	~
-    \begin{subfigure}[b]{0.1\textwidth}
+   	\hfill
+    \begin{subfigure}[b]{0.075\textwidth}
             \includegraphics[width=\textwidth]{resources/intro_3_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.075\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_3_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.075\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_3_4}
+    \end{subfigure}
+   	\hfill
+    \begin{subfigure}[b]{0.075\textwidth}
+            \includegraphics[width=\textwidth]{resources/intro_3_5}
     \end{subfigure}
     \caption{Figure}
 \end{figure}
@@ -128,10 +164,10 @@ certain ear parts, such as  Fossa Triangularies and Crus Helicis, do not appear 
 
 \end{itemize}
 
-To illustrate how time consuming careful annotation of ears is we lay down our own experience. A trained annotator needs an average of (TODO: experiment) minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about (TODO: experiment). Furthermore,  training and fatigue largely influence the annotation accuracy. Hence, a second pass on the annotated data is, in many cases, necessary. Due to the fact that manual annotation is a rather costly and labour-intensive procedure, unsupervised learning of deformable models for the tasks of alignment has recently attracted some attention \cite{?}. Nevertheless, the method [..] requires a consistent set of shapes annotated with landmarks to perform deformable face congealing. Finally, since the problem of fully unsupervised discovery of the deformations of arbitrary objects is a very difficult and ill-posed problems the limited number of methods [..] that have been applied for the task cannot be applied for arbitrary collection of images collected "in-the-wild". 
+To illustrate how time consuming careful annotation of ears is we lay down our own experience. A trained annotator needs an average of 4 minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about 67 hours. Furthermore,  training and fatigue largely influence the annotation accuracy. Hence, a second pass on the annotated data is, in many cases, necessary. Due to the fact that manual annotation is a rather costly and labour-intensive procedure, unsupervised learning of deformable models for the tasks of alignment has recently attracted some attention \cite{?}. Nevertheless, the method [..] requires a consistent set of shapes annotated with landmarks to perform deformable face congealing. Finally, since the problem of fully unsupervised discovery of the deformations of arbitrary objects is a very difficult and ill-posed problems the limited number of methods [..] that have been applied for the task cannot be applied for arbitrary collection of images collected "in-the-wild". 
 
 
-In this paper, we provide a solution for annotating an object with regards to its deformations that requires considerable less effort and in the same time can be used to define statistical deformations for objects without consistent set of landmarks. That is, we argue that it is better to annotate an object with regards to a set of continues lines that describe the shape of the object. An example is provided in Fig.. where the shape of the facial parts is annotated with continuous lines instead of a number of discrete landmarks. Similarly, the shape annotations for the ear, a bottle and human body is shown in Fig.. Annotating facial images by following this procedure takes only ... secs per image. Furthermore, these shapes can be automatically produced by recent methods that perform discriminative segmentation of objects. 
+In this paper, we provide a solution for annotating an object with regards to its deformations that requires considerable less effort and in the same time can be used to define statistical deformations for objects without consistent set of landmarks. That is, we argue that it is better to annotate an object with regards to a set of continues lines that describe the shape of the object. An example is provided in Fig.. where the shape of the facial parts is annotated with continuous lines instead of a number of discrete landmarks. Similarly, the shape annotations for the ear, a bottle and human body is shown in Fig.. Annotating facial images by following this procedure takes less than 30 secs per image. Furthermore, these shapes can be automatically produced by recent methods that perform discriminative segmentation of objects. 
 
 Furthermore, we show that flow methods have mature enough so that it can be used to densely annotate the proposed shapes using simple, as well as more recent and robust shape representations methods [..].  In particular, to build dense correspondence between independent shapes, we apply optical flow on shapes with low rank constrains, so we name it shape flow. Optical flow is originally applied to video sequences that several assumptions holds, illumination consistency and motion smoothness, while shapes having no motion smoothness completely as all training data are independent. Low rank constrain plays important role to simulate motion smoothness assumption. 
 
@@ -193,6 +229,3 @@ In summarize the paper proposed ...:
 %statistical component analysis techniques should be
 %employed \cite{?}. 
 
-
-
-\clearpage
