@@ -18,10 +18,7 @@ As a first step, the shapes that correspond to the training data are consistentl
 The next step is the application of ICP to achieve an initial simple alignment of the SVS images. 
 The similarity-aligned SVS images are then fed into a multi-image subspace flow estimation that establishes dense correspondences between all shapes of the training set. In order for the flow estimation to be accurate and exploit the correlation across the different training shapes, it utilises a correspondence basis that is built on sparse correspondences given by Nonrigid ICP alignment of the annotated data. Finally, the dense correspondences that are yielded by the optical flow serve as automatic dense landmarks and are used to define a novel dense version of Active Appearance Models. The following sections discuss the different stages of the proposed pipeline in further detail.
 
-
 %two major modules. The first module handles inconsistent annotation set by converting to landmark independent shape discriminator. While the other module produces shape flow on object discriminators to generate dense flow transformations in shape space following by robust PCA\cite{?} to generate deformable model. In this section, we present the entire architectures, design decision and algorithms.
-
-
 \subsection{Shape Representation Without Consistent Annotations}
 \label{sec:svs}
 %Ordinarily, construction of deformable model requires training data set having consistent number of landmarks. But unavoidable changes has to be made before applying same algorithm on diverse annotated data set.
