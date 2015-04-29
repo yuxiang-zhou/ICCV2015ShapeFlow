@@ -16,60 +16,6 @@ Imperial College London\\
 \maketitle
 \thispagestyle{empty}
 
-\begin{figure}[h!]
-\centering
-    \begin{subfigure}[b]{0.115\textwidth}
-            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0000}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.115\textwidth}
-            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0001}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.115\textwidth}
-            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0010}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.115\textwidth}
-            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0015}
-    \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0016}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0028}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0031}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0032}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0001}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0003}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0006}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0008}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0009}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0016}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0020}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.115\textwidth}
-    %         \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0023}
-    % \end{subfigure}
-\caption{dAAMs Dense Grid Visualisation.}
-\label{fig:fr}
-\end{figure}
-
 The supplementary materials provided detailed evaluation of dense Active Appearance Models (dAAMs) built with proposed pipeline of constructing dense AAMs without consistent set of landmarks. There are four experiments reported to support applications of dAAMs. Experiment \ref{sec:fittingresults} exhibits a full fitting visualisations of non-rigid face and ear alignment in-the-wild between classic AAMs and our dense AAMs. Experiments \ref{sec:modelanalysis} compares analytical qualities of our dAAMs with respect to that of classic aams in terms of model compactness, warping quality and reconstruction.
 Moreover, experiment \ref{sec:reconstruct} serves as a qualitative demonstration of how the proposed pipeline can use be effectively used to generate novel modified instances of an object, e.g. caricatures, from simple hand drawn sketches.
 Finally, experiment \ref{sec:segmentation} evaluates the effectiveness and performance of the proposed methodology to build dense AAMs of objects that are difficult to annotated with respect to a consistent set of landmarks, such as bottles and human bodies. Corresponding demonstration shows the usage of utilising dAAMs for objects segmentation with corresponding evaluations on precision.
@@ -79,17 +25,77 @@ Finally, experiment \ref{sec:segmentation} evaluates the effectiveness and perfo
 \section{Fitting Results}
 \label{sec:fittingresults}
 
-
-
-This section provided additional visualisation results of experiments in original paper section 3.3 Non-rigid object alignment in-the-wild, where quantitative analysis of dense AAMs of ears and faces are shown. Although there are few figures demonstrated normalise point-to-point error measure of ear fitting, only sparse points are shown in order to maintain readability. But here we have visualisation of pixel-wise dense fitting results for both faces and ears. Results for this experiment of faces are reported over the 224
-testing images of the LFPW database using 68 point ground truth landmark annotations\footnote{\label{ibug_300} \url{http://ibug.doc.ic.ac.uk/resources/300-W/}}. For ears, we collected 605 high resolution images of ears in unconstrained scenarios and annotated them using both a newly defined 55 point annotation scheme for ears and the curve annotations proposed in the paper. Results for fitting ears are reported over 105 testing images.
+This section provided additional visualisation results of experiments in original paper section 3.3 Non-rigid object alignment in-the-wild, where quantitative analysis of dense AAMs of ears and faces are shown. Although there are few figures demonstrated normalise point-to-point error measure of ear fitting, only sparse points are shown in order to maintain readability. But here we have visualisation of pixel-wise dense fitting results for both faces and ears. Results for this experiment of faces are reported over the 224 testing images of the LFPW database using 68 point ground truth landmark annotations\footnote{\label{ibug_300} \url{http://ibug.doc.ic.ac.uk/resources/300-W/}}. For ears, we collected 605 high resolution images of ears in unconstrained scenarios and annotated them using both a newly defined 55 point annotation scheme for ears and the curve annotations proposed in the paper. Results for fitting ears are reported over 105 testing images.
 
 Figure \ref{fig:fr} shows dense fitting results in grid view, thus dense points are visualisible without affecting the visibility of appearance.
+
+\begin{figure}[!h]
+\centering
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0000}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0001}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0010}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0015}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0016}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0028}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0031}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0032}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0036}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0039}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_ear_0040}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.115\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0001}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.115\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0003}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.115\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0006}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.115\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0008}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.115\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0009}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.115\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0016}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.115\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0020}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.115\textwidth}
+            \includegraphics[height=1\textwidth]{supports/Fittings/fitting_face_0023}
+    \end{subfigure}
+\caption{dAAMs Dense Grid Visualisation.}
+\label{fig:fr}
+\end{figure}
 
 \section{Shape Models Analysis}
 \label{sec:modelanalysis}
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.2\textwidth}
             \includegraphics[width=\textwidth]{supports/Model_Analysis/Shape_Reconstruct_ear}
@@ -118,7 +124,7 @@ There are two experiments shown in this section. First experiment investigate th
 Statistical evaluation are given in terms of the normalised point-to-point error
 measure for reconstructing both ears and faces. Figure \ref{fig:rc_face} clearly shows the number of shape components used for reconstruction and corresponding normalised point-to-point error in terms of mean and variance. It manifests dAAMs is significantly out performed classic AAMs on shape reconstruction. The reconstruction of appearance are shown in experiment \ref{sec:reconstruct}.
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.5\textwidth}
             \includegraphics[width=\textwidth]{supports/Model_Analysis/ear_aam_eigen_shape}
@@ -140,13 +146,14 @@ measure for reconstructing both ears and faces. Figure \ref{fig:rc_face} clearly
     \label{fig:compact}
 \end{figure}
 
+
 Second experiment are performed to investigate the impact of shape components of AAMs and dAAMs in terms of variance ratio of eigenvalues, shown in figure \ref{fig:compact}. We can observe in detail variance ratio of each principle components of shape models and cumulative ratio of first few components. As plot revealed, dAAMs proved having a more compact shape model as first few components captures higher variance ratio than that of classic AAMs, therefore less components are needed in order to capture certain amount of variance which leads to better reconstruction especially with few shape components.
 
 
 \section{Appearance Reconstruction}
 \label{sec:reconstruct}
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.45\textwidth]{resources/Fig_Draw/draw}
     \caption{Caricatures Appearance Reconstruction}
@@ -160,7 +167,7 @@ The comprehensive results are shown in figure \ref{fig:draw}, where first column
 \section{Segmentation using Dense AAM}
 \label{sec:segmentation}
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{supports/Segmentation_Measure/ear}
@@ -180,7 +187,7 @@ The comprehensive results are shown in figure \ref{fig:draw}, where first column
     \label{fig:seg_init}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{supports/Segmentation_Measure/bottle_seg}
