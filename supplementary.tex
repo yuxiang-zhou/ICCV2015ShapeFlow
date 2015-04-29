@@ -37,7 +37,7 @@ Figure \ref{fig:fr} shows dense fitting results using a grid visualisation, thus
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.45\textwidth]{supports/Fittings/fittings}
+\includegraphics[width=0.5\textwidth]{supports/Fittings/fittings}
 \caption{Result of fitting dAAMs on ears (first two rows) and faces (last two rows). A dense grid visualisation is used.}
 \label{fig:fr}
 \end{figure}
@@ -51,16 +51,16 @@ Figure \ref{fig:fr} shows dense fitting results using a grid visualisation, thus
 \begin{figure}[!b]
     \centering
     % \vspace*{-0.1in}
-    \begin{subfigure}[b]{0.4\textwidth}
-            \includegraphics[width=\textwidth]{supports/Model_Analysis/sr_daams}
+    \begin{subfigure}[b]{0.43\textwidth}
+            \includegraphics[width=\textwidth]{supports/Model_Analysis/sr_ear}
         %\caption{dAAMs dense shape reconstruction}
     \end{subfigure}
     \\
-    \begin{subfigure}[b]{0.4\textwidth}
-            \includegraphics[width=\textwidth]{supports/Model_Analysis/sr_aams}
+    \begin{subfigure}[b]{0.43\textwidth}
+            \includegraphics[width=\textwidth]{supports/Model_Analysis/sr_face}
         %\caption{AAMs dense shape reconstruction}
     \end{subfigure}
-    \caption{Dense shape reconstruction errors for ears and faces. Top: results of dAAMs, bottom: results of AAMs. The normalised point-to-point error is used an evaluation measure. Please notice the major difference in the error scale (vertical axis) between the two plots.}
+    \caption{Dense shape reconstruction errors for ears and faces. Top: results of reconstruction on ears, bottom: results of reconstruction on faces. The normalised point-to-point error is used an evaluation measure.}
     \label{fig:rc_face}
 \end{figure}
 
@@ -73,11 +73,11 @@ Figure \ref{fig:compact} demonstrates the variance explained as a function of th
 
 \begin{figure}[!t]
     \centering
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.43\textwidth}
             \includegraphics[width=\textwidth]{supports/Model_Analysis/var_ratio}
         %\caption{dAAMs vs AAMs Variance Ratio}
     \end{subfigure}
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.43\textwidth}
             \includegraphics[width=\textwidth]{supports/Model_Analysis/cumu_var_ratio}
         %\caption{dAAMs vs AAMs Cumulative Variance Ratio}
     \end{subfigure}
@@ -102,7 +102,8 @@ Finally, Figure \ref{fig:pcamodel} visualises the principal components of dAAMs 
 
 \begin{figure}[!b]
     \centering
-    \includegraphics[width=0.45\textwidth]{resources/Fig_Draw/draw}
+    %\vspace*{-0.2in}
+    \includegraphics[width=0.5\textwidth]{resources/Fig_Draw/draw}
     \caption{Synthesizing face images from caricature sketches. First column: caricature sketches. Second column: arbitrary chosen face images. Third and last column: sketch-based warping of images based on AAMs (third column) and dAAMs (last column).}
     \label{fig:draw}
 \end{figure}
