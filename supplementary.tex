@@ -18,48 +18,39 @@ Imperial College London\\
 
 
 %%%%%%%%% Appendix
-\appendix
-\section{Introduction}
+\section*{Introduction}
 In this supplementary material, we provide additional experimental results and comparisons for the proposed pipeline of constructing dense AAMs without consistent set of landmarks. 
 We present four different sets of experiments. 
+In Section \ref{sec:fittingresults}, we present visualisations of in-the-wild model fitting  for faces and ears, comparing classic AAMs and the proposed dense AAMs. In Section \ref{sec:modelanalysis}, we provide evaluations and comparisons of dAAMs, in terms of model compactness, warping quality and reconstruction accuracy. 
+Moreover, Section \ref{sec:reconstruct} serves as a qualitative demonstration of how the proposed pipeline can be used to effectively generate novel modified instances of an object, such as caricatures, from simple hand drawn sketches.
+Finally, in Section \ref{sec:segmentation}, we evaluate the application of the proposed methodology on the problem of segmenting objects that are difficult to annotate with a consistent set of landmarks, such as bottles and human bodies.
 
-reported to support applications of dAAMs. 
-
-In Section \ref{sec:fittingresults}, we present visualisations of in-the-wild model fitting  for faces and ears, comparing classic AAMs and the proposed dense AAMs. In Section \ref{sec:modelanalysis}, we compares analytical qualities of our dAAMs with respect to that of classic aams in terms of model compactness, warping quality and reconstruction.
-Moreover, experiment \ref{sec:reconstruct} serves as a qualitative demonstration of how the proposed pipeline can use be effectively used to generate novel modified instances of an object, e.g. caricatures, from simple hand drawn sketches.
-Finally, experiment \ref{sec:segmentation} evaluates the effectiveness and performance of the proposed methodology to build dense AAMs of objects that are difficult to annotated with respect to a consistent set of landmarks, such as bottles and human bodies. Corresponding demonstration shows the usage of utilising dAAMs for objects segmentation.
-
+\appendix
 \section{Fitting Results}
 \label{sec:fittingresults}
 
-This section provided additional visualisation results of experiments in original paper section 3.3 Non-rigid object alignment in-the-wild, where quantitative analysis of dense AAMs of ears and faces are shown. Although there are few figures demonstrated normalise point-to-point error measure of ear fitting, only sparse points are shown in order to maintain readability. But here we have visualisation of pixel-wise dense fitting results for both faces and ears. Results for this experiment of faces are reported over the 224 testing images of the LFPW database using 68 point ground truth landmark annotations
+This section provides additional visualisations for the experiments of Section 3.3 of the main submission (Non-rigid object alignment in-the-wild). We visualise pixel-wise dense fitting results for both faces and ears. Results for this experiment of faces are reported over the 224 testing images of the LFPW database using 68 point ground truth landmark annotations
 \footnote{\label{ibug_300} \url{http://ibug.doc.ic.ac.uk/resources/300-W/}}. 
 For ears, we collected 605 high resolution images of ears in unconstrained scenarios and annotated them using both a newly defined 55 point annotation scheme for ears and the curve annotations proposed in the paper. Results for fitting ears are reported over 105 testing images.
 
-Figure \ref{fig:fr} shows dense fitting results in grid view, thus dense points are visualisible without affecting the visibility of appearance. Full fitting results visualisation are provided in supplementary videos.
+Figure \ref{fig:fr} shows dense fitting results using a grid visualisation, thus dense points are visible without affecting the visibility of appearance.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=0.45\textwidth]{supports/Fittings/fittings}
-\caption{dAAMs Dense Grid Visualisation.}
+\caption{Result of fitting dAAMs on ears (first two rows) and faces (last two rows). A dense grid visualisation is used.}
 \label{fig:fr}
 \end{figure}
 
-\section{Shape Models Analysis}
+
+
+\section{Shape Model Analysis}
 \label{sec:modelanalysis}
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\textwidth]{supports/Models/models}
-\caption{First Five Principle Components Visualisation of dAAMs on Ears and Faces}
-\label{fig:pcamodel}
-\end{figure*}
-
-There are two experiments shown in this section. First experiment investigate the impact of constructing dense points correspondence. Note that we are using the same AAMs and dAAMs models built from experiments \ref{sec:fittingresults}. The experiment is used to reveal accuracy of dense model reconstruction in shape space. In particular, given a ground-truth shape, we use shape models from both AAMs and dAAMs to reconstruct the given shape densely. As AAMs having sparse shape model, we densify it the same way as warping textures on to shape model, in this case is piecewise affine transform. 
 
 \begin{figure}[!b]
     \centering
-    \vspace*{-0.1in}
+    % \vspace*{-0.1in}
     \begin{subfigure}[b]{0.4\textwidth}
             \includegraphics[width=\textwidth]{supports/Model_Analysis/sr_daams}
         %\caption{dAAMs dense shape reconstruction}
@@ -69,22 +60,16 @@ There are two experiments shown in this section. First experiment investigate th
             \includegraphics[width=\textwidth]{supports/Model_Analysis/sr_aams}
         %\caption{AAMs dense shape reconstruction}
     \end{subfigure}
-    \caption{Dense Shape Reconstruction}
+    \caption{Dense shape reconstruction errors for ears and faces. Top: results of dAAMs, bottom: results of AAMs. The normalised point-to-point error is used an evaluation measure. Please notice the major difference in the error scale (vertical axis) between the two plots.}
     \label{fig:rc_face}
 \end{figure}
 
-Statistical evaluation are given in terms of the normalised point-to-point error measure for reconstructing both ears and faces. Figure \ref{fig:rc_face} clearly shows the number of shape components used for reconstruction and corresponding normalised point-to-point error in terms of mean and variance. It manifests dAAMs is significantly out performed classic AAMs on shape reconstruction. The reconstruction of appearance are shown in experiment \ref{sec:reconstruct}.
 
-\begin{figure}[!b]
-    \centering
-    \includegraphics[width=0.45\textwidth]{resources/Fig_Draw/draw}
-    \caption{Caricatures Appearance Reconstruction}
-    \label{fig:draw}
-\end{figure}
+We first investigate the reconstruction accuracy of AAMs and dAAMs in the shape space. In particular, given a ground-truth shape, we use the shape models from both AAMs and dAAMs to reconstruct the given shape densely. Since AAMs contain a sparse shape model, we densify it using a piecewise affine transformation, which is typically used in warping textures on to shape model too. Figure \ref{fig:rc_face} shows plots of dense shape reconstruction errors for ears and faces, for varying number of principal components kept. We observe that dAAMs significantly outperform classic AAMs on shape reconstruction. 
 
-Second experiment are performed to investigate the impact of shape components of AAMs and dAAMs in terms of variance ratio of eigenvalues, shown in figure \ref{fig:compact}. We can observe in detail variance ratio of each principle components of shape models and cumulative ratio of first few components. As plot revealed, dAAMs proved having a more compact shape model as first few components captures higher variance ratio than that of classic AAMs, therefore less components are needed in order to capture certain amount of variance which leads to better reconstruction especially with few shape components.
 
-Figure \ref{fig:pcamodel} demonstrated shape and appearance models visualisation for dense AAMs of ears and faces. Middle column shows mean shape and mean appearance while rest columns present corresponding principle components with $\pm 3$ variance.
+Furthermore, we explore the compactness of the built AAMs and dAAMs models. 
+Figure \ref{fig:compact} demonstrates the variance explained as a function of the number of principal components. One can infer that dAAMs have a more compact shape model than AAMs, which leads to better reconstruction especially with few shape components.
 
 \begin{figure}[!t]
     \centering
@@ -96,35 +81,40 @@ Figure \ref{fig:pcamodel} demonstrated shape and appearance models visualisation
             \includegraphics[width=\textwidth]{supports/Model_Analysis/cumu_var_ratio}
         %\caption{dAAMs vs AAMs Cumulative Variance Ratio}
     \end{subfigure}
-    \caption{dAAMs vs AAMs Variance Ratios}
+    \caption{Variance explained by each principal component, for both dAAM and AAM models. Top: variance explained by each principal component. Bottom: cumulative plot of the variance explained as a function of the principal components.}
     \label{fig:compact}
 \end{figure}
+
+Finally, Figure \ref{fig:pcamodel} visualises the principal components of dAAMs for ears and faces. We observe that the variation of both shape and appearance captured by the model seem plausible.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{supports/Models/models}
+\caption{Principal components of dAAMs built on ears (top) and faces (bottom). The mean (middle columns) as well as the first five principal components are visualised for both shape (left) and appearance (right). $\pm 3$ times the variance of the corresponding component is used in each case.}
+\label{fig:pcamodel}
+\end{figure*}
+
+
+
 
 \section{Appearance Reconstruction}
 \label{sec:reconstruct}
 
-\begin{table}[!b]
-\small
-\centering
-\begin{tabular}{|l|c|c|c|}
-\hline
-\emph{Object}   & \emph{mean} & \emph{std} & \emph{median}\\
-\hline\hline
-Bottles         & 0.8125      & 0.1460     & 0.8414\\
-Action - Jump   & 0.6102      & 0.0198     & 0.6099\\
-Action - Slide  & 0.6444      & 0.0500     & 0.6501\\
-\hline
-\end{tabular}
-\caption{Segmentation statistics for experiment \ref{sec:segmentation}}
-\label{tab:seg_result}
-\end{table}
+\begin{figure}[!b]
+    \centering
+    \includegraphics[width=0.45\textwidth]{resources/Fig_Draw/draw}
+    \caption{Synthesizing face images from caricature sketches. First column: caricature sketches. Second column: arbitrary chosen face images. Third and last column: sketch-based warping of images based on AAMs (third column) and dAAMs (last column).}
+    \label{fig:draw}
+\end{figure}
 
-This experiment serves as a qualitative demonstration of how the proposed pipeline can be effectively used to generate novel modified instances of an object, e.g. caricatures. To be specific, firstly we manually craft a set of hand-drawn cartoon-like shape sketch before applying shape flow on them to align with reference frame, thus having dense correspondence of landmarks. Following with shape reconstruction using both AAMs and dAAMs. Lastly warp appearance from arbitrarily chosen faces onto reconstructed shape using piecewise affine (of AAMs) and shape flow (of dAAMs). 
+In this qualitative experiment, we show how the proposed pipeline can be used to generate novel modified instances of an object, e.g. caricatures. To be specific, firstly we manually craft a set of hand-drawn cartoon-like shape sketches. We then apply shape flow to align them with the reference frame. In this way, we establish dense correspondences of landmarks. Afterwards, we perform shape reconstruction using both AAMs and dAAMs. Finally, we warp the appearance from arbitrarily chosen faces on the reconstructed shape using either piecewise affine warp (in the case of AAMs) or shape flow (in the case of dAAMs). The corresponding results are shown in figure \ref{fig:draw}. We see that AAMs introduce more severe artifacts, especially on the areas of mouth and eyes, where nuanced information is missing or models are overly deformed. In contrast, dAAMs yield a significantly more plausible result.
 
-The comprehensive results are shown in figure \ref{fig:draw}, where first column is caricatures, second is source textures, third and last columns are corresponding reconstructions of AAMs and dAAMs. Comparing with dAAMs, AAMs turned to introduce artifacts on reconstructions especially mouth and eyes area, where nuanced information are missing or models are overly deformed. Again, dAAMs not only have remarkable non-rigid alignment performance against AAMs (experiment \ref{sec:fittingresults}) but performs considerably better at objects reconstruction.
+
 
 \section{Segmentation using Dense AAM}
 \label{sec:segmentation}
+
+In this section, we present experiments of utilising our dense AAM for object segmentation. Two object classes, bottles and human bodies, are considered. For human bodies, we use images along with ground truth segmentation from Space-Time Actions dataset \footnote{\label{sta} \url{http://www.wisdom.weizmann.ac.il/~vision/SpaceTimeActions.html}}, which includes sequences with several human actions. We use ``jumping'' and ``sliding'' actions. As far as bottles are concerned, we use 500 high-resolution images that we collected and annotated using a newly-defined 50 point annotation scheme, as well as the curve annotations proposed in this paper. We randomly split these images into two disjoint sets of training (400) and testing (100) images. Bottle models were built using 400 training images while body models are built in terms of human actions (e.g. jumping), each having approximately 200 training images and 50 test images. 
 
 \begin{figure}[!t]
     \centering
@@ -140,19 +130,31 @@ The comprehensive results are shown in figure \ref{fig:draw}, where first column
             \includegraphics[height=\textwidth]{supports/Segmentation_Measure/body}
         %\caption{Body Initial Bounding Box}
     \end{subfigure}
-    \caption{Perturb Initialisation of Object Detector}
+    \caption{Examples of fitting initialisations used for the segmentation experiment. These are created by random perturbation of the ground-truth bounding box.}
     \label{fig:seg_init}
 \end{figure}
 
-In this section, we experimenting on utilising our dense AAM for objects segmentation. Two subjects, bottles and human, are involved. As for human segmentation, we gather ground true images from Space-Time Actions
-\footnote{\label{sta} \url{http://www.wisdom.weizmann.ac.il/~vision/SpaceTimeActions.html}},
-where several human action sequences are provided with segmentation. There are 10 categories actions where each category contains 10 subjects each are recorded with more than 120 frames. For bottles, 500 high resolution images of bottles are collected and annotated using not only a newly defined 50 point annotation scheme for bottles, but also the curve annotations proposed in this paper. We randomly split the previous database into two disjoint sets of training (400) and testing (100) images. Bottle models were built using 400 training images while body models are built in terms of human actions (e.g. jumping), each having approximately 200 training images and 50 test images. Note here that we used the same procedures used in experiment \ref{sec:fittingresults} to build models. 
+Fitting dAAMs on test images yields dense landmarks that can be used to perform segmentation. In a real-world scenario, a simple object detector would be required to be applied prior to our pipeline to initialise the fitting. However, as a simple evaluation, we initialise the fitting by randomly perturbing the ground-truth bounding box with certain variance to simulate an object detector with implicit detection, see e.g.~Figure \ref{fig:seg_init}. Table  \ref{tab:seg_result} reports the segmentation precision, in case of fitting bottles and human bodies by adopting the proposed dAAMs pipeline.
 
-Fitting dAAMs on test images gives dense landmarks which could be used to perform segmentation. A simple object detector would be required in prior to our pipeline to initialise the fitting. For simple evaluation, we perturb the ground-truth segmentation with certain variance to simulate an object detector with implicit detection. Initialisation samples are shown in Figure \ref{fig:seg_init}. The performance of fitting bottles and bodies are measured based on the segmentation precision shown in Table \ref{tab:seg_result}, where statistical results including mean, variance and median are presented.
-    
-{\small
-\bibliographystyle{ieee}
-\bibliography{bib}
-}
+\begin{table}[!h]
+\small
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\emph{Object}   & \emph{mean} & \emph{std} & \emph{median}\\
+\hline\hline
+Bottles         & 0.8125      & 0.1460     & 0.8414\\
+Action - Jump   & 0.6102      & 0.0198     & 0.6099\\
+Action - Slide  & 0.6444      & 0.0500     & 0.6501\\
+\hline
+\end{tabular}
+\caption{Segmentation precision, in case of fitting bottles and human bodies by adopting the proposed dAAMs pipeline. The mean, standard deviation and median of the precision error are provided.}
+\label{tab:seg_result}
+\end{table}
+
+% {\small
+% \bibliographystyle{ieee}
+% \bibliography{bib}
+% }
 
 \end{document}
