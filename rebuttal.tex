@@ -1,0 +1,93 @@
+\input{contents/header}
+
+% \iccvfinalcopy % *** Uncomment this line for the final submission
+
+\input{iccv_setting}
+
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Rebuttal: Constructing Statistical Deformable Models with Shape Flow}
+
+\author{Yuxiang Zhou, Joan Alabort-i-Medina, Anastasios Roussos, Stefanos Zafeiriou\\
+Imperial College London\\
+180 Queen’s Gate, SW7 2AZ, London, U.K.\\
+{\tt\small \{yuxiang.zhou10, ja310, troussos, s.zafeiriou\}@imperial.ac.uk}}
+\maketitle
+\thispagestyle{empty}
+
+
+\section{To Assigned Reviewer 13}
+
+\textit{There is not much novel or interesting in this paper. The method consists of converting a finite number of user annotated points into a shape model using radial basis functions, something that is standard. It then uses registrations of those representations. The registration algorithm consists of components that are standard. Since there are many methods developed in the computer vision literature for registration of shape representations, this paper would need to compare to those approaches.}
+\\ \\
+Answer:
+\\ \\
+\textit{It needs to be elucidated why any standard registration technique would not suffice, and experimental comparison is necessary.}
+\\ \\
+Answer:
+\\ \\
+
+\textit{Section 2.3.2: the optimization of the functional introduced in Eqn 4-6 is not discussed.”}
+\\ \\
+Answer:
+\\ \\
+\textit{The experiment in 3.2 claims to show the necessity of the constrained basis in the registration scheme. However, it is not clear what was done. It seems that eqn 4 and 5 were eliminated in the energy functional. I wonder whether the authors used a TV spatial regularity penalty on u? If not, it is clear that the constrained basis would perform better.}
+\\ \\
+Answer:
+To be more specific on the energy function, we still maintain all penalty terms that normal optical flow has, but one additional penalty terms as constrain on Trajactory basis. As we apply flows
+\\ \\
+\textit{The paper states that the method is robust to annotation errors. However, there are no experiments demonstrating this. There needs to be some experiment evaluating the performance of the algorithm as the user annotation degrades.}
+\\ \\
+Answer:
+\\ \\
+\textit{Registration is performed to a "reference image"; it is not stated how this reference image is determined.}
+\\ \\
+Answer:
+\\ \\
+
+\section{To Assigned Reviewer 19}
+\textit{My main concern of this work is that it only achieves similar performance as the classic AAM method on the well studied face alignment application. This is very discouraging. If we consider the face alignment algorithms introduced in recent years, they are far better then the classic AAM introduced 7 years ago, and they will be better than the proposed method too.}
+\\ \\
+Answer:
+
+Performance measured based on consistent number of landmarks which is required by all AAM-like algorithms. However, our model is built based on curve annotation where by default is not comparable with models with landmarks. To compare against AAM, we have to predict the finite number of landmarks from curve annotation which might not be a fair comparison. But we achieved that the predicted landmarks and similar to manual annotations.
+\\ \\
+\textit{This paper does not mention anything on the efficiency of dAAM method. Given the fact that it has a denser shape model, I assume the speed of the proposed dAAM method will be slower than the classic AAM method. Again, the state-of-art face alignment algorithms based on cascaded regressor are very fast. What is the advantage of the proposed method compared to the state-of-art face alignment algorithms, in terms of efficiency and accuracy? Please comment on this in rebuttal}
+\\ \\
+Answer:
+
+Slower when building deformable models but faster in alignment due to explicit linear warp transform.
+\\ \\
+\textit{What is the fundamental advantage of dAAM compared to classic AAM?}
+\\ \\
+Answer:
+
+Introduced Curve Annotation (need evidence)
+
+Dense Model implies explicit warping in Alignment Stage
+
+Reveals nuanced Shape Information
+\\ \\
+
+\textit{The paper discusses the application of this technique to annotating things like bottles and human pose, but does not present results on either task.}
+\\ \\
+Answer:
+
+No existing benchmarks to against?
+\\ \\
+\section{To Assigned Reviewer 3}
+\textit{The abstract claims that this is the first time SDMs have been built by putting examples in dense correspondence. This is a strange statement, since they refer to papers which do exactly that, such as [7,14]. There is a long history of algorithms for this.}
+\\ \\
+Answer:
+\\ \\
+
+\textit{This explicitly used optical flow to get dense correspondence for a variety of objects. There is also extensive literature on using non-rigid registration for this in the medical image analysis literature.}
+\\ \\
+Answer:
+\\ \\
+
+Final Version:
+
+
+\end{document}
