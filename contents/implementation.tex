@@ -11,7 +11,7 @@
 
 % Despite the fact that that vast majority of existing methods are based on a sparse shape representation, dense shape representation reveals more nuanced structure in terms of [todo: explain].
 
-We propose a novel framework for building deformable models that does not require any consistent set of annotated landmarks and is based on a dense shape representation. Our method only requires a set of point or curve line annotations that does not need to be consistent over different training samples. It combines the techniques of Non-rigid Iterative Closest Point (NICP) \cite{Amber2007}, multi-channel Support Vector Shape (SVS) \cite{Nguyen2013} representation and multi-image subspace flow \cite{} in an effective framework that has significant descriptive power.
+We propose a novel framework for building deformable models that does not require any consistent set of annotated landmarks and is based on a dense shape representation. Our method only requires a set of point or curve line annotations that does not need to be consistent over different training samples. It combines the techniques of Non-rigid Iterative Closest Point (NICP) \cite{Amber2007}, multi-channel Support Vector Shape (SVS) \cite{Nguyen2013} representation and multi-image subspace flow \cite{Garg:2013hu} in an effective framework that has significant descriptive power.
 
 The proposed pipeline is depicted in Figure~\ref{fig:archi}. It takes as input a set of training images of a particular object class, along with (possibly inconsistent) point and/or curve line annotations. 
 As a first step, the shapes that correspond to the training data are consistently represented using multichannel SVS. 
@@ -60,7 +60,7 @@ After constructing the SVS representation for all images, the next step is to ap
 
 In order to robustly establish dense correspondences across all SVS images using optical flow, it is important to constrain how pixels are allowed to move from one SVS image to another. In this work, we constrained the range of allowed pixels movements by learning a correspondence subspace. 
 
-In order to learn the such a subspace, we first transform the original annotation to point clouds. Then, we use NICP to align the previous point clouds with respect to a reference point cloud template. NICP iteratively deforms each point cloud until its points match the ones on the shape template and correspondences are established. However, because optical flow is a pixel-wise frame registration technique, we need to establish correspondences for all pixels on the reference frame rather than for sparse point clouds. To achieve this, we apply Thin Plate Spline (TPS) \cite{Bookstein1989} to find correspondences for all pixels in the reference frame given the point cloud correspondences provided by the previous NICP stage. Once dense correspondences have been established among all pixels, the so-called correspondence subspace is obtained by performing PCA the trajectory of all pixels. Note that incorporating the previous subspace as a low rank constrained in optical flow is consistent with its assumption of smooth motion.
+In order to learn such a subspace, we first transform the original annotation to point clouds. Then, we use NICP to align the previous point clouds with respect to a reference point cloud template. NICP iteratively deforms each point cloud until its points match the ones on the shape template and correspondences are established. However, because optical flow is a pixel-wise frame registration technique, we need to establish correspondences for all pixels on the reference frame rather than for sparse point clouds. To achieve this, we apply Thin Plate Spline (TPS) \cite{Bookstein1989} to find correspondences for all pixels in the reference frame given the point cloud correspondences provided by the previous NICP stage. Once dense correspondences have been established among all pixels, the so-called correspondence subspace is obtained by performing PCA the trajectory of all pixels. Note that incorporating the previous subspace as a low rank constrained in optical flow is consistent with its assumption of smooth motion.
 
 % For all dense transformations $\bm{u_n}(\bm{x}), n \in \{1,...,F\}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
 % \begin{equation}
@@ -142,7 +142,7 @@ Using the SVS functions built from training data, the next step of our pipeline 
 For this reason, we propose to modify the formulation of multiframe optical flow by using the correspondence basis that we introduced in conjunction with the SVS functions, rather than actual images.
 
 \subsubsection{Non-rigid ICP and Correspondence Basis Creation} \label{sec:trabasis}
-Since shapes from training data set having completely no motion smoothness, it is of importance to contain constrains in optimization on how pixels moves from one shape frame to another. We constrain the optimization on correspondence subspace.
+Since shapes from training data set having completely no motion smoothness, it is of importance to contain constraints in optimization on how pixels moves from one shape frame to another. We constrain the optimization on correspondence subspace.
 We supervise trajectories from sparse landmarks. To begin with, Non-rigid Iterative Closest Point (NICP)\cite{Amber2007} applied on sparse annotated points. NICP deforms target points to fit the template iteratively until all points on target deformed to match points on template. Performs the algorithm for all training data will get an implicit point correlation between sparse shapes.
 
 Since optical flow pixel-wise frame registration, the trajectory basis build should also match the dimension, which is dense on shapes with trajectory length depends on number of training data. With correspondences produced after applying NICP, Thin-Plate Spline (TPS)\cite{Bookstein1989} transformations are utilized to warp every shape planes to template plane thereby generates an implicit dense shape registering. For all dense transformations $\bm{u_n}(\bm{x}), n \in \{1,...,F\}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
@@ -176,9 +176,9 @@ To register all decision functions to template shape, decision function $d_i(\bm
 \begin{align}
     \operatorname*{arg\,min}_{\bm{u_n}(\bm{x}), \bm{v}}&=\alpha \int_{\Omega}\sum_{n=1}^F|\bm{d_n}(x+\bm{u_n}(x))-\bm{d_0}(x)\| dx  \label{eq:costfunc}\\
     &+ \beta \int_{\Omega}\sum_{n=1}^F\|\bm{u_n}(x)-\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(x)\|^2 dx \label{eq:lowrank}\\
-    &+ \sum[\bm{TV}(Qv)]
+    &+ \sum[\bm{TV}(Qv)] + v^T.L.V
 \end{align}
-where $d_n(x)$ is the decision function from~\eqref{eq:decisionfunc}, which returns possibilities of given coordinate classified as shape component where coordinates are from set $\Omega \in \Re^2$. $TV(Qv)$ is total variation as regularization on low rank subspace, $Q$ is trajectory basis and $v^T.L.v$ is low rank spacial constrains.
+where $d_n(x)$ is the decision function from~\eqref{eq:decisionfunc}, which returns possibilities of given coordinate classified as shape component where coordinates are from set $\Omega \in \Re^2$. $TV(Qv)$ is total variation as regularization on low rank subspace, $Q$ is trajectory basis and $v^T.L.v$ is low rank spacial constraints.
 
 Term~\eqref{eq:costfunc} state the shape constancy where points having similar classification probability are from same object.
 Part~\eqref{eq:lowrank} applies constrain on low rank trajectory basis states in section~\ref{sec:trabasis}.
