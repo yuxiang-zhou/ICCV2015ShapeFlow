@@ -151,7 +151,7 @@ The correspondence basis that we build constrains these correspondence vectors t
 The correspondence basis is found by applying PCA on the result of TPS interpolation and keeping only the first $R$ principal components. Formally, let $F$ be the number of training shapes and $n=1,\ldots,F$ be the training shape index. Also, let $\boldsymbol{q}_1(n),\ldots,\boldsymbol{q}_R(n):
 \{1,\ldots,F\} \rightarrow \R^2$ be the $R$ orthonormal elements of the correspondence basis, where $\boldsymbol{q}_i(n)$ is the displacement vector that matches the points of the reference shape with the points of the $n$-th training shape shape, according to the variation described from the $i$-th correspondence basis element. Note that the basis elements $\boldsymbol{q}_i(n)$ are independent from the point location.
 
-In addition, let .. be the image domain where the reference and training shapes are defined and ... denote the point location. We denote the shape flow result as ...,  where u_n(x) is the displacement vector that matches the point ... of the image of the reference shape with its corresponding location at the image of the $n$-th training shape.
+In addition, let .. be the image domain where the reference and training shapes are defined and ... denote the point location. We denote the shape flow result as ...,  where $u_n(x)$ is the displacement vector that matches the point ... of the image of the reference shape with its corresponding location at the image of the $n$-th training shape.
 
 Using the constructed correspondence basis, the shape flow can be approximated as:
 
@@ -159,7 +159,7 @@ Using the constructed correspondence basis, the shape flow can be approximated a
 
 
 where $\bm{v_i}(\bm{x})$ is the weight that needs to be applied on the $i$-th correspondence basis element, in order to get the correspondence vector for the point location $\bm{x}$. In other words, the shape flow for every point $\bm{x}$ is described as linear combination of basis elements that is controlled by the coefficients $\bm{v_i}(\bm{x})$ that depend on $\bm{x}$.
-The values of the $i$-th coefficient for all the points $\bm{v_i}(\bm{x})$ can be interpreted as an image defined on \Omega. Using the correspondence basis, the determination of the shape flow boils down to the determination of the set of coefficients $\bm{v_i}(\bm{x})$
+The values of the $i$-th coefficient for all the points $\bm{v_i}(\bm{x})$ can be interpreted as an image defined on $\Omega$. Using the correspondence basis, the determination of the shape flow boils down to the determination of the set of coefficients $\bm{v_i}(\bm{x})$
 
 
 
