@@ -58,11 +58,30 @@ After constructing the SVS representation for all images, the next step is to ap
 
 \subsection{Shape Correspondence Basis}
 
-In order to robustly establish dense correspondences across all SVS images using optical flow, it is important to constrain how pixels are allowed to move from one SVS image to another. In this work, we constrained the range of allowed pixels movements by learning a correspondence subspace.
+We consider the problem of dense correspondences across SVS images as a joint estimation of optical flow fields between a reference SVS image and every SVS image of the training dataset. The estimation of such a ``shape flow'' defines for every training SVS image a warping function that registers it with the reference SVS image. To establish the dense correspondences robustly, we are inspired by the idea of subspace constraints in the estimation of multiframe optical flow \cite{Garg:2013hu}.
 
-In order to learn the such a subspace, we first transform the original annotation to point clouds. Then, we use NICP to align the previous point clouds with respect to a reference point cloud template. NICP iteratively deforms each point cloud until its points match the ones on the shape template and correspondences are established. However, because optical flow is a pixel-wise frame registration technique, we need to establish correspondences for all pixels on the reference frame rather than for sparse point clouds. To achieve this, we apply Thin Plate Spline (TPS) \cite{Bookstein1989} to find correspondences for all pixels in the reference frame given the point cloud correspondences provided by the previous NICP stage. Once dense correspondences have been established among all pixels, the so-called correspondence subspace is obtained by performing PCA the trajectory of all pixels. Note that incorporating the previous subspace as a low rank constrained in optical flow is consistent with its assumption of smooth motion.
+Instead of the \emph{motion} basis used in multiframe optical flow formulation of \cite{Garg:2013hu}, we build a \emph{correspondence} basis that introduces constraints on how points of different shapes are matched to each other. Every pixel of the reference SVS image is matched to its corresponding position at every training SVS image and in this way defines a \emph{correspondence vector}. This vector consists of the 2D locations of the specific point in all SVS images. To form this vector, the training images are arranged in an arbitrary order. Similarly to the order of training samples when Principal Component Analysis (PCA) is applied, this order does not affect the result of our method and any re-ordering would produce exactly the same results.
 
-% For all dense transformations $\bm{u_n}(\bm{x}), n \in \{1,...,F\}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
+
+Formally, let $F$ be the number of training SVS images and $n=1,\ldots,F$ be the training image index. Also, let $\boldsymbol{q}_1(n),\ldots,\boldsymbol{q}_R(n):
+\{1,\ldots,F\} \rightarrow \R^2$ be the $R$ orthonormal elements of the correspondence basis, where $\boldsymbol{q}_i(n)$ is the displacement vector that matches the points of the reference SVS image with the points of the $n$-th training SVS image, according to the variation described from the $i$-th correspondence basis element. Note that the basis elements $\boldsymbol{q}_i(n)$ are independent from the point location. Note also that the number of basis elements is typically much smaller than the full dimensionality ($2 F$) of correspondence vectors, therefore this basis plays a role of dimensionality reduction.
+
+
+In addition, let $\Omega \subset \R^2$ be the image domain of the SVS images and $\bx$ denote the point location. We denote the shape flow result as $\bm{u}_n(\bx):\Omega\times \{1,\ldots,F\}
+\rightarrow \R^2$,  where $\bm{u}_n(\bx)$ is the displacement vector that matches the point $\bx$ of the reference SVS image with its corresponding location at the $n$-th training SVS image.
+
+Using the constructed correspondence basis, the shape flow can be approximated as:
+\begin{equation}\label{eq:LinTrajModel}
+    \bm{u}_n(\bx) \approx
+    \sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(\bx) \,\, ,
+\end{equation}
+where $\bm{v_i}(\bx)$ is the weight that needs to be applied on the $i$-th correspondence basis element, in order to get the correspondence vector for the point location $\bm{x}$. In other words, the shape flow for every point $\bm{x}$ is described as a linear combination of basis elements that is controlled by the coefficients $\bm{v_i}(\bm{x})$.
+The values of the $i$-th coefficient for all the points $\bm{v_i}(\bm{x})$ can be interpreted as an image defined on $\Omega$. Using the correspondence basis, the determination of the shape flow boils down to the determination of the set of coefficients $\bm{v_i}(\bm{x})$. The above representation of shape flow constrains the correspondence vectors to lie on a subspace and therefore acts as a low-rank prior that enforces coherency of the shape registration result over the whole training dataset of shapes.
+
+
+The next section describes the methodology of constructing the correspondence basis and estimating the shape flow robustly.
+
+% For all dense transformations $\bm{u}_n(\bm{x}), n \in \{1,...,F\}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
 % \begin{equation}
 %     \begin{bmatrix}
 %         \bm{u_1}(\bm{x}) \\
@@ -84,7 +103,7 @@ In order to learn the such a subspace, we first transform the original annotatio
 % \end{equation}
 % where $\bm{q_i}(n)$ are low rank components with $R \ll 2F$ and $\bm{v_i}(x)$ weighted each component with dependencies on $x$. Simpler expression shown below:
 % \begin{equation}
-%     \bm{u_n}(\bm{x})=\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(x)+\bm{\varepsilon_n}(\bm{x})
+%     \bm{u}_n(\bm{x})=\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(x)+\bm{\varepsilon_n}(\bm{x})
 % \end{equation}
 
 
@@ -138,85 +157,107 @@ In order to learn the such a subspace, we first transform the original annotatio
 \subsection{Shape Flow}
 \label{sec:shapeflow}
 
-Using the SVS functions built from training data, the next step of our pipeline is to establish dense correspondences between all these functions. We propose to do this procedure jointly, by using the correspondence basis. This procedure shares similarities with multiframe optical flow estimation \cite{Garg:2013hu} and we call it Shape flow. We build upon robust methods for  optical flow estimation. Optical flow estimation typically works based on the assumptions of brightness or colour constancy and motion smoothness. However, in terms of shapes, neither constant illumination nor continuous motion exists in sequence of shapes as all training data are independent.
-For this reason, we propose to modify the formulation of multiframe optical flow by using the correspondence basis that we introduced in conjunction with the SVS functions, rather than actual images.
+
+Using the SVS functions built from training data, one of the main steps of our pipeline is to estimate dense correspondences between all these functions. We propose to perform this estimation simultaneously for all training data, by using the correspondence basis. This procedure, which we call \emph{shape flow}, builds upon robust methods for multiframe optical flow estimation \cite{Garg:2013hu}. However, optical flow estimation typically works based on the assumptions of brightness or colour constancy and motion smoothness, whereas in our setting the input training data correspond to shapes. For this reason, we propose to modify the formulation of \cite{Garg:2013hu} by using the correspondence basis that we introduced in conjunction with the SVS representation of shapes.
+
+
+%
+%In order to learn the such a subspace, we first transform the original annotation to point clouds. Then, we use NICP to align the previous point clouds with respect to a reference point cloud template. NICP iteratively deforms each point cloud until its points match the ones on the shape template and correspondences are established. However, because optical flow is a pixel-wise frame registration technique, we need to establish correspondences for all pixels on the reference frame rather than for sparse point clouds. To achieve this, we apply Thin Plate Spline (TPS) \cite{Bookstein1989} to find correspondences for all pixels in the reference frame given the point cloud correspondences provided by the previous NICP stage. Once dense correspondences have been established among all pixels, the so-called correspondence subspace is obtained by performing PCA the trajectory of all pixels. Note that incorporating the previous subspace as a low rank constrained in optical flow is consistent with its assumption of smooth motion.
+
+
 
 \subsubsection{Non-rigid ICP and Correspondence Basis Creation} \label{sec:trabasis}
 
-Instead of the \emph{motion} basis used in multiframe optical flow formulation of \cite{Garg:2013hu}, we build a \emph{correspondence} basis that introduces constrains in how points of different shapes are matched to each other. By considering a reference shape, every pixel of the image that represents this shape is matched with its corresponding position and in this way defines a \emph{correspondence vector}. This vector consists of the 2D locations of the specific point in all shape images. To form this vector, the training shapes are arranged in an arbitrary order. Similarly to the order of training samples when Principal Component Analysis (PCA) is applied, this order does not affect the result of our method and any re-ordering would produce exactly the same results.
 
 
-The correspondence basis that we build constrains these correspondence vectors to lie on a subspace and in this way acts as a low-rank prior that enforces coherency of the shape registration result over the whole training dataset of shapes. To effectively build this basis, we first apply Non-rigid Iterative Closest Point (NICP)\cite{Amber2007} between the cloud of sparse annotated landmarks in the reference shape and the one of every shape of the training set. NICP deforms the cloud of points of every shape to match the points of the reference shape. This yields an initial estimation of the correspondence vectors on the sparse locations of annotated landmarks on the reference shape. To make this correspondence vectors estimation dense (i.e.~for every pixel of the reference shape), we apply Thin-Plate Splines (TPS)\cite{Bookstein1989} interpolation. This initial estimation of dense correspondence vectors define for every training shape a warping function that registers it with the reference shape and equivalently an initial ``shape flow'', i.e.~ an ``optical flow'' between the reference shape and every training shape.
-
-The correspondence basis is found by applying PCA on the result of TPS interpolation and keeping only the first $R$ principal components. Formally, let $F$ be the number of training shapes and $n=1,\ldots,F$ be the training shape index. Also, let $\boldsymbol{q}_1(n),\ldots,\boldsymbol{q}_R(n):
-\{1,\ldots,F\} \rightarrow \R^2$ be the $R$ orthonormal elements of the correspondence basis, where $\boldsymbol{q}_i(n)$ is the displacement vector that matches the points of the reference shape with the points of the $n$-th training shape shape, according to the variation described from the $i$-th correspondence basis element. Note that the basis elements $\boldsymbol{q}_i(n)$ are independent from the point location.
-
-In addition, let .. be the image domain where the reference and training shapes are defined and ... denote the point location. We denote the shape flow result as ...,  where $u_n(x)$ is the displacement vector that matches the point ... of the image of the reference shape with its corresponding location at the image of the $n$-th training shape.
-
-Using the constructed correspondence basis, the shape flow can be approximated as:
-
-....
-
-
-where $\bm{v_i}(\bm{x})$ is the weight that needs to be applied on the $i$-th correspondence basis element, in order to get the correspondence vector for the point location $\bm{x}$. In other words, the shape flow for every point $\bm{x}$ is described as linear combination of basis elements that is controlled by the coefficients $\bm{v_i}(\bm{x})$ that depend on $\bm{x}$.
-The values of the $i$-th coefficient for all the points $\bm{v_i}(\bm{x})$ can be interpreted as an image defined on $\Omega$. Using the correspondence basis, the determination of the shape flow boils down to the determination of the set of coefficients $\bm{v_i}(\bm{x})$
+To effectively build the correspondence basis, we first transform the original annotations to sparse point clouds. Then, we apply Non-rigid Iterative Closest Point (NICP)\cite{Amber2007} between the point cloud of annotations in the reference shape and the one of every shape of the training set. NICP iteratively deforms the cloud of points of every shape to match the points of the reference shape. This yields an initial estimation of the correspondence vectors on the sparse locations of annotated landmarks on the reference shape. To make this correspondence vectors estimation dense (i.e.~for every pixel of the reference SVS image), we apply Thin-Plate Splines (TPS)\cite{Bookstein1989} interpolation. Finally, the correspondence basis is found by applying PCA on the result of TPS interpolation and keeping only the first $R$ principal components.
 
 
 
 
+%
+%
+%Since optical flow pixel-wise frame registration, the trajectory basis build should also match the dimension, which is dense on shapes with trajectory length depends on number of training data. With correspondences produced after applying NICP, Thin-Plate Spline (TPS)\cite{Bookstein1989} transformations are utilized to warp every shape planes to template plane thereby generates an implicit dense shape registering. For all dense transformations $\bm{u}_n(\bm{x}), n \in \{1,...,F\}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
+%\begin{equation}
+%    \begin{bmatrix}
+%        \bm{u_1}(\bm{x}) \\
+%        \vdots \\
+%        \bm{u_F}(\bm{x})
+%    \end{bmatrix}
+%    =
+%    \begin{bmatrix}
+%        \bm{q_1}(1) & \cdots & \bm{q_R}(1) \\
+%        \vdots      & \ddots & \vdots  \\
+%        \bm{q_1}(F) & \cdots & \bm{q_R}(F)
+%    \end{bmatrix}
+%    \times
+%    \begin{bmatrix}
+%        \bm{v_1}(x) \\
+%        \vdots \\
+%        \bm{v_R}(x)
+%    \end{bmatrix}
+%\end{equation}
+%where $\bm{q_i}(n)$ are low rank components with $R \ll 2F$ and $\bm{v_i}(x)$ weighted each component with dependencies on $x$. Simpler expression shown below:
+%\begin{equation}
+%    \bm{u}_n(\bm{x})=\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(\bm{x})+\bm{\varepsilon_n}(\bm{x})
+%\end{equation}
+%Although optical flow on shapes made under the assumption that objects motion are smooth, the low rank constrain on trajectory basis recovered the hypothesis.
 
 
 
 
-, where
+\subsubsection{Variational Shape Flow Estimation}%{Multi-image Subspace Flow}
 
-We apply PCA on the
-
-a set of warping functions that give an initial registration of every training shape with the reference shape.
-
-
-Performs the algorithm for all training data will get an implicit point correlation between sparse shapes.
-
-Since optical flow pixel-wise frame registration, the trajectory basis build should also match the dimension, which is dense on shapes with trajectory length depends on number of training data. With correspondences produced after applying NICP, Thin-Plate Spline (TPS)\cite{Bookstein1989} transformations are utilized to warp every shape planes to template plane thereby generates an implicit dense shape registering. For all dense transformations $\bm{u_n}(\bm{x}), n \in \{1,...,F\}$, where $F$ is number of data and $\bm{x}$ is vector of pixels, Principle Component Analysis (PCA) is performed on trajectory to obtain low rank trajectory basis:
-\begin{equation}
-    \begin{bmatrix}
-        \bm{u_1}(\bm{x}) \\
-        \vdots \\
-        \bm{u_F}(\bm{x})
-    \end{bmatrix}
-    =
-    \begin{bmatrix}
-        \bm{q_1}(1) & \cdots & \bm{q_R}(1) \\
-        \vdots      & \ddots & \vdots  \\
-        \bm{q_1}(F) & \cdots & \bm{q_R}(F)
-    \end{bmatrix}
-    \times
-    \begin{bmatrix}
-        \bm{v_1}(x) \\
-        \vdots \\
-        \bm{v_R}(x)
-    \end{bmatrix}
-\end{equation}
-where $\bm{q_i}(n)$ are low rank components with $R \ll 2F$ and $\bm{v_i}(x)$ weighted each component with dependencies on $x$. Simpler expression shown below:
-\begin{equation}
-    \bm{u_n}(\bm{x})=\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(\bm{x})+\bm{\varepsilon_n}(\bm{x})
-\end{equation}
-Although optical flow on shapes made under the assumption that objects motion are smooth, the low rank constrain on trajectory basis recovered the hypothesis.
-
-\subsubsection{Multi-image Subspace Flow}
-To register all decision functions to template shape, decision function $d_i(\bm{x}), i \in {1,...,F}$ are grouped into one sequence before applying flow algorithm. The objective cost function we would like to minimise is:
+Following \cite{Garg:2013hu}, we propose to estimate the shape flow over all training SVS images $\bm{d_n}(\bx)$ by minimizing the following energy:
 \begin{align}
-    \operatorname*{arg\,min}_{\bm{u_n}(\bm{x}), \bm{v}}&=\alpha \int_{\Omega}\sum_{n=1}^F|\bm{d_n}(x+\bm{u_n}(x))-\bm{d_0}(x)\| dx  \label{eq:costfunc}\\
-    &+ \beta \int_{\Omega}\sum_{n=1}^F\|\bm{u_n}(x)-\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(x)\|^2 dx \label{eq:lowrank}\\
-    &+ \sum[\bm{TV}(Qv)]
+E_{sf} & =\alpha
+\int_{\Omega}\sum_{n=1}^F \|\bm{d_n}(\bx+\bm{u}_n(x))-\bm{d_0}(x)\| \ud \bx \label{eq:costfunc}\\
+    &+ \beta \int_{\Omega}\sum_{n=1}^F\|\bm{u}_n(\bx)-\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(\bx)\|^2 \ud \bx \label{eq:lowrank}\\
+    &+
+\int_\Omega  \sum_{i=1}^R \,\, \left \|    \nabla \bm{v_i}(\bx)    \right \|  \,\ud \bx \label{eq:TVterm}
 \end{align}
-where $d_n(x)$ is the decision function from~\eqref{eq:decisionfunc}, which returns possibilities of given coordinate classified as shape component where coordinates are from set $\Omega \in \Re^2$. $TV(Qv)$ is total variation as regularization on low rank subspace, $Q$ is trajectory basis and $v^T.L.v$ is low rank spacial constrains.
+This energy consists of two sets of unknown shape flows that are relatively close to each other: (i) $\bm{u}_n(x)$, which tries to explain the data from the input SVS images, and (ii) the shape flow determined by the correspondence basis coefficients $\bm{v_i}(\bx)$ that are spatially regularised and enforce a low-rank prior. We minimize this energy jointly with respect to $\bm{u}_n(\bx)$ and $\bm{v_i}(\bx)$. The positive parameters $\alpha$ and $\beta$ weigh the balance between the terms of the energy.
 
-Term~\eqref{eq:costfunc} state the shape constancy where points having similar classification probability are from same object.
-Part~\eqref{eq:lowrank} applies constrain on low rank trajectory basis states in section~\ref{sec:trabasis}.
-The objective cost function has two free parameters $u$ and $v$, so we perform alternating minimisation. The equation can be solved using a thresholding scheme after linearisation of image functions. The minimisation can be speed up by paralleling the minimisation for every spatial-temporal point $(x;n), x \in \Omega, n \in \{1,...F\}$ independently.
+The \textbf{first term} of the above energy (term \eqref{eq:costfunc}) is a data attachment term
+that uses the robust $\Lone$-norm.  It is based on the assumption that the values of the reference SVS image $\bm{d_0}(\bx)$ at every pixel $\bx$ are preserved at its corresponding locations on all training SVS images $\bm{d_n}(\bx)$. The use of an $\Lone$-norm improves the robustness of the method since it allows deviations from this assumption, which might occur in practice.
+The \textbf{second term} of the energy (term \eqref{eq:lowrank}) penalizes the difference between the two sets  of shape flows and acts as a coupling term between them.
+The \textbf{third term} of the energy (term \eqref{eq:TVterm}) corresponds to the spatial Total Variation regularization \cite{rudin92} of
+the correspondence basis coefficients $\bm{v_i}(\bx)$.
+This term penalizes spatial oscillations of each coefficient caused by distortions of the SVS images but not strong discontinuities that are desirable in the borders of different object regions. In addition, this term allows to fill in information into regions where the shape information in the SVS images is missing, due to e.g.~regions with no annotations.
 
-After solving the equation, $\bm{u_n}(\bm{x}), x \in \Omega$ gives a group of deformation fields that registering every decision functions in the shape sequence to reference frame e.g. $\bm{u_1}(\bm{x})$ registers decision function $\bm{d_1}(\bm{x})$ to the reference frame. Figure~\ref{fig:deformationfield} demonstrates deformation fields that warps from reference frame where there is no deformation.
+We implement the minimization of the energy $E_{sf}$ by using the optimization algorithm described in \cite{Garg:2013hu}. In every coarse-to-fine and warping iteration, we use an initialization that comes from the previous iteration and for the very beginning, we initialize with the shape flow result of the TPS interpolation described in Sec.~\ref{sec:trabasis}. We approximate the data term \eqref{eq:costfunc} by linearizing the SVS images around the initialization. After that, the energy becomes convex and we optimize it using an alternating optimization w.r.t.~$\bm{v_i}(\bx)$ and $\bm{u}_n(\bx)$. The minimization w.r.t.~
+$\bm{v_i}(\bx)$ is decoupled for every coefficient $i$ and corresponds to Rudin-Osher-Fatemi Total Variation denoising \cite{rudin92}, which we solve efficiently by applying the first order primal-dual algorithm of \cite{Chambolle:Pock:JMIV2011}. The minimization w.r.t.~
+$\bm{u}_n(x)$ is decoupled for every pixel $\bx$ and every shape index $i$. This minimization is also implemented by applying the efficient primal-dual algorithm of \cite{Chambolle:Pock:JMIV2011}.
+
+
+
+Figure~\ref{fig:deformationfield} demonstrates some examples of the deformation fields derived by the estimated shape flow using the aforementioned method. These results correspond to some of the training shapes, in the case of a face dataset.
+
+
+
+
+
+
+%
+%
+%To register all decision functions to template shape, decision function $d_i(\bm{x}), i \in {1,...,F}$ are grouped into one sequence before applying flow algorithm. The objective cost function we would like to minimise is:
+%\begin{align}
+%    \operatorname*{arg\,min}_{\bm{u}_n(\bm{x}), \bm{v}}&=\alpha \int_{\Omega}\sum_{n=1}^F|\bm{d_n}(x+\bm{u}_n(x))-\bm{d_0}(x)\| dx  \label{eq:costfunc}\\
+%    &+ \beta \int_{\Omega}\sum_{n=1}^F\|\bm{u}_n(x)-\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(x)\|^2 dx \label{eq:lowrank}\\
+%    &+ \sum[\bm{TV}(Qv)]
+%\end{align}
+%where $d_n(x)$ is the decision function from~\eqref{eq:decisionfunc}, which returns possibilities of given coordinate classified as shape component where coordinates are from set $\Omega \in \Re^2$. $TV(Qv)$ is total variation as regularization on low rank subspace, $Q$ is trajectory basis and $v^T.L.v$ is low rank spacial constrains.
+%
+%Term~\eqref{eq:costfunc} state the shape constancy where points having similar classification probability are from same object.
+%Part~\eqref{eq:lowrank} applies constrain on low rank trajectory basis states in section~\ref{sec:trabasis}.
+%The objective cost function has two free parameters $u$ and $v$, so we perform alternating minimisation. The equation can be solved using a thresholding scheme after linearisation of image functions. The minimisation can be speed up by paralleling the minimisation for every spatial-temporal point $(x;n), x \in \Omega, n \in \{1,...F\}$ independently.
+%
+%
+%
+%
+%
+%
+%After solving the equation, $\bm{u}_n(\bm{x}), x \in \Omega$ gives a group of deformation fields that registering every decision functions in the shape sequence to reference frame e.g. $\bm{u_1}(\bm{x})$ registers decision function $\bm{d_1}(\bm{x})$ to the reference frame. Figure~\ref{fig:deformationfield} demonstrates deformation fields that warps from reference frame where there is no deformation.
 
 % \begin{figure}[h!]
 %     \centering
