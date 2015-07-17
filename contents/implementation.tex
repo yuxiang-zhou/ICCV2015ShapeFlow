@@ -11,7 +11,7 @@
 
 % Despite the fact that that vast majority of existing methods are based on a sparse shape representation, dense shape representation reveals more nuanced structure in terms of [todo: explain].
 
-We propose a novel framework for building deformable models that does not require any consistent set of annotated landmarks and is based on a dense shape representation. Our method only requires a set of point or curve line annotations that does not need to be consistent over different training samples. It combines the techniques of Non-rigid Iterative Closest Point (NICP) \cite{Amber2007}, multi-channel Support Vector Shape (SVS) \cite{Nguyen2013} representation and multi-image subspace flow \cite{} in an effective framework that has significant descriptive power.
+We propose a novel framework for building deformable models that does not require any consistent set of annotated landmarks and is based on a dense shape representation. Our method only requires a set of point or curve line annotations that does not need to be consistent over different training samples. It combines the techniques of Non-rigid Iterative Closest Point (NICP) \cite{Amber2007}, multi-channel Support Vector Shape (SVS) \cite{Nguyen2013} representation and multi-image subspace flow \cite{Garg:2013hu} in an effective framework that has significant descriptive power.
 
 The proposed pipeline is depicted in Figure~\ref{fig:archi}. It takes as input a set of training images of a particular object class, along with (possibly inconsistent) point and/or curve line annotations.
 As a first step, the shapes that correspond to the training data are consistently represented using multichannel SVS.
@@ -240,7 +240,7 @@ Figure~\ref{fig:deformationfield} demonstrates some examples of the deformation 
 
 %
 %
-%To register all decision functions to template shape, decision function $d_i(\bm{x}), i \in {1,...,F}$ are grouped into one sequence before applying flow algorithm. The objective cost function we would like to minimise is:
+%To register all decision functions to temp`late shape, decision function $d_i(\bm{x}), i \in {1,...,F}$ are grouped into one sequence before applying flow algorithm. The objective cost function we would like to minimise is:
 %\begin{align}
 %    \operatorname*{arg\,min}_{\bm{u}_n(\bm{x}), \bm{v}}&=\alpha \int_{\Omega}\sum_{n=1}^F|\bm{d_n}(x+\bm{u}_n(x))-\bm{d_0}(x)\| dx  \label{eq:costfunc}\\
 %    &+ \beta \int_{\Omega}\sum_{n=1}^F\|\bm{u}_n(x)-\sum_{i=1}^R\bm{q_i}(n)\bm{v_i}(x)\|^2 dx \label{eq:lowrank}\\
