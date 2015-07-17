@@ -55,7 +55,7 @@ Figure \ref{fig:build_svs} shows an exemplar shape representation using SVS. As 
 \begin{figure}[b!]
     \centering
     \includegraphics[width=0.4\textwidth]{resources/svs2}
-    \caption{Exemplar SVS shape representation. The decision function is trained on the set of sparse landmarks. Same SVS shape can be trained with missing data shown in sparse lanmarks. For last figure, jet colourmap shows probabilities of a pixel belonging to the original shape.}
+    \caption{Exemplar SVS shape representation. A similar SVS image is obtained from different annotations of the same shape.}
     \label{fig:build_svs}
 \end{figure}
 
@@ -311,23 +311,19 @@ Figure~\ref{fig:deformationfield} shows some examples of deformation fields deri
 
 The deformation fields obtained from section \ref{sec:shapeflow} can be effectively used to learn a naturally dense version of Active Appearance Models \cite{Cootes2001, Matthews2004}. Because all deformation fields contain the same number of pixels (the same as on the reference frame) the spatial positions $\bm{x}_i=(x_i, y_i)$ of these pixels can be treated as point landmarks and the deformation field themselves as dense annotations of the object's shape. Consequently, building a dense shape model reduces to normalizing these dense annotations with respect to a global similarity transform (typically using Procrustes Analysis) and applying Principal Component Analysis (PCA). The resulting shape model can be mathematically expressed as:
 \begin{equation}
-    \vspace{-10pt}
     \begin{aligned}
         \bm{s} & = \bm{\bar{s}} + \bm{S} \bm{p}
     \end{aligned}
     \label{eq:shape_model}
-    \vspace{-10pt}
 \end{equation}
 where $\bm{\bar{s}}$ is mean shape and $\bm{S}$ and $\bm{p}$ are the shape bases and shape parameters respectively.
 
 On the other hand, the texture model associated to the previous set of densified shapes can be easily obtained by warping all image onto the reference frame, making explicit use of the one-to-one correspondence between pixels on the reference frame and on the deformation fields. Once the images have been warped, the texture model is obtained by applying PCA on the warped images. The texture model is mathematically defined by the following expression:
 \begin{equation}
-    \vspace{-10pt}
     \begin{aligned}
         \bm{t} = \bm{\bar{t}} + \bm{T} \bm{c}
     \end{aligned}
 	\label{eq:tex_model}
-	\vspace{-10pt}
 \end{equation}
 where $\bm{t}$ is the mean texture, and $\bm{T}$ and $\bm{c}$ are the texture bases and texture parameters respectively.
 
