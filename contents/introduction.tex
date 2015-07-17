@@ -83,39 +83,39 @@
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_1_2}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.075\textwidth}
+    \begin{subfigure}[b]{0.07\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_1_3}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.075\textwidth}
+    \begin{subfigure}[b]{0.07\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_1_4}
     \end{subfigure}
    	\hfill
-    \begin{subfigure}[b]{0.075\textwidth}
+    \begin{subfigure}[b]{0.07\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_1_5}
     \end{subfigure}
     \\
-    \begin{subfigure}[b]{0.07\textwidth}
+    \begin{subfigure}[b]{0.06\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_2_0}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.07\textwidth}
+    \begin{subfigure}[b]{0.06\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_2_1}
     \end{subfigure}
    	\hfill
-    \begin{subfigure}[b]{0.07\textwidth}
+    \begin{subfigure}[b]{0.06\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_2_2}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.07\textwidth}
+    \begin{subfigure}[b]{0.06\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_2_3}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.07\textwidth}
+    \begin{subfigure}[b]{0.06\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_2_4}
     \end{subfigure}
    	\hfill
-    \begin{subfigure}[b]{0.07\textwidth}
+    \begin{subfigure}[b]{0.06\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Intro/intro_2_5}
     \end{subfigure}
     \\
@@ -164,7 +164,7 @@ There are two drawbacks on building deformable models that rely on landmarks:
 
 \end{itemize}
 
-To illustrate how time consuming careful annotation of the human ear is we lay down our own experience. A trained annotator needs an average of 4 minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about 67 hours. Furthermore,  training and fatigue largely influence the annotation accuracy. Hence, a second pass on the annotated data is, in many cases, necessary. Due to the fact that manual annotation is a costly and labour-intensive procedure, unsupervised learning of deformable models for the tasks of object alignment has recently attracted some attention \cite{frey2003learning, baker2004automatic, cootes2004groupwise, jojic2006escaping, Huang2006, kokkinos2007unsupervised, cox2008least, jiang2009learning, liu2009simultaneous, Zhang2012}. However, because the problem of fully unsupervised discovery of the deformations of arbitrary objects is difficult and ill-posed the limited number of methods that have been applied to the task cannot be directly applied to arbitrary collection of images collected "in-the-wild". On the other hand, the method of \cite{antonakos2014automatic}, which can deal with "in-the-wild" images, requires a set of consistently annotated sparse shapes to perform deformable face congealing. 
+To illustrate how time consuming careful annotation of the human ear is we lay down our own experience. A trained annotator needs an average of 4 minutes per image for the manual annotation of 55 landmarks. This means that the annotation of 1000 images requires a total of about 67 hours. Furthermore,  training and fatigue largely influence the annotation accuracy. Hence, a second pass on the annotated data is, in many cases, necessary. Due to the fact that manual annotation is a costly and labour-intensive procedure, unsupervised learning of deformable models for the tasks of object alignment has recently attracted some attention \cite{frey2003learning, baker2004automatic, cootes2004groupwise, jojic2006escaping, Huang2006, kokkinos2007unsupervised, jiang2009learning, liu2009simultaneous, Zhang2012}. However, because the problem of fully unsupervised discovery of the deformations of arbitrary objects is difficult and ill-posed the limited number of methods that have been applied to the task cannot be directly applied to arbitrary collection of images collected "in-the-wild". On the other hand, the method of \cite{antonakos2014automatic}, which can deal with "in-the-wild" images, requires a set of consistently annotated sparse shapes to perform deformable face congealing. 
 
 
 In this paper, we provide a solution for annotating an object with regards to its deformations that requires considerable less effort and in the same time can be used to define statistical deformations for objects without consistent set of landmarks. That is, we argue that it is better to annotate an object with regards to a set of continuous lines that describe the shape of the object. An example is provided in Figure \ref{fig:intro} where the shape of the facial parts is annotated with continuous lines instead of a number of discrete landmarks. Similarly, the shape annotations for the ear, a bottle and human body is shown in Figure \ref{fig:intro} Annotating facial images by following this procedure takes 42, 38 and 43 secs per image for faces, ears and bottles correspondingly. Furthermore, these shapes can be automatically produced by recent methods that perform discriminative segmentation of objects. 

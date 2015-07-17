@@ -1,6 +1,6 @@
 \begin{figure*}[t!]
     \centering
-        \includegraphics[width=\textwidth]{resources/architecture2}
+        \includegraphics[width=\textwidth]{resources/architecture3}
     \caption{Schematic description of the proposed pipeline. Figure best viewed by zooming in.}
     \label{fig:archi}
 \end{figure*}
@@ -36,19 +36,26 @@ where $\bm{x}_i^*$ are the so-called support vectors and \mbox{$k(\bm{x}, \bm{y}
 Figure \ref{fig:build_svs} shows an exemplar shape representation using SVS. As it can be observed, the final result does not drastically depend on the original number of annotated landmarks.
 
 
+% \begin{figure}[b!]
+%     \centering
+%     \begin{subfigure}[b]{0.2\textwidth}
+%             \includegraphics[width=\textwidth]{resources/landmark}
+%         \caption{Spare landmarks}
+%     \end{subfigure}
+%     \qquad
+%     \begin{subfigure}[b]{0.2\textwidth}
+%             \includegraphics[width=\textwidth]{resources/svs}
+%         \caption{Decision function}
+%         \label{fig:svs}
+%     \end{subfigure}
+%     \caption{Exemplar SVS shape representation. The decision function is trained on the set of sparse landmarks. In (b), brighter colour represents higher probability of a pixels belonging to the original shape.}
+%     \label{fig:build_svs}
+% \end{figure}
+
 \begin{figure}[b!]
     \centering
-    \begin{subfigure}[b]{0.2\textwidth}
-            \includegraphics[width=\textwidth]{resources/landmark}
-        \caption{Spare landmarks}
-    \end{subfigure}
-    \qquad
-    \begin{subfigure}[b]{0.2\textwidth}
-            \includegraphics[width=\textwidth]{resources/svs}
-        \caption{Decision function}
-        \label{fig:svs}
-    \end{subfigure}
-    \caption{Exemplar SVS shape representation. The decision function is trained on the set of sparse landmarks. In (b), brighter colour represents higher probability of a pixels belonging to the original shape.}
+    \includegraphics[width=0.4\textwidth]{resources/svs2}
+    \caption{Exemplar SVS shape representation. The decision function is trained on the set of sparse landmarks. Same SVS shape can be trained with missing data shown in sparse lanmarks. For last figure, jet colourmap shows probabilities of a pixel belonging to the original shape.}
     \label{fig:build_svs}
 \end{figure}
 
@@ -109,39 +116,39 @@ The next section describes the methodology of constructing the correspondence ba
 
 \begin{figure}[t!]
     \centering
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/0}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/1}
     \end{subfigure}
    	\hfill
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/2}
     \end{subfigure}
     \\
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/3}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/4}
     \end{subfigure}
    	\hfill
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/5}
     \end{subfigure}
     \\
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/6}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/7}
     \end{subfigure}
    	\hfill
-    \begin{subfigure}[b]{0.15\textwidth}
+    \begin{subfigure}[b]{0.1\textwidth}
             \includegraphics[width=\textwidth]{resources/Fig_Flows/8}
     \end{subfigure}
     \caption{Exemplar deformation fields obtained using the proposed pipeline. Figure best viewed by zooming in.}
@@ -304,19 +311,23 @@ Figure~\ref{fig:deformationfield} shows some examples of deformation fields deri
 
 The deformation fields obtained from section \ref{sec:shapeflow} can be effectively used to learn a naturally dense version of Active Appearance Models \cite{Cootes2001, Matthews2004}. Because all deformation fields contain the same number of pixels (the same as on the reference frame) the spatial positions $\bm{x}_i=(x_i, y_i)$ of these pixels can be treated as point landmarks and the deformation field themselves as dense annotations of the object's shape. Consequently, building a dense shape model reduces to normalizing these dense annotations with respect to a global similarity transform (typically using Procrustes Analysis) and applying Principal Component Analysis (PCA). The resulting shape model can be mathematically expressed as:
 \begin{equation}
+    \vspace{-10pt}
     \begin{aligned}
         \bm{s} & = \bm{\bar{s}} + \bm{S} \bm{p}
     \end{aligned}
     \label{eq:shape_model}
+    \vspace{-10pt}
 \end{equation}
 where $\bm{\bar{s}}$ is mean shape and $\bm{S}$ and $\bm{p}$ are the shape bases and shape parameters respectively.
 
 On the other hand, the texture model associated to the previous set of densified shapes can be easily obtained by warping all image onto the reference frame, making explicit use of the one-to-one correspondence between pixels on the reference frame and on the deformation fields. Once the images have been warped, the texture model is obtained by applying PCA on the warped images. The texture model is mathematically defined by the following expression:
 \begin{equation}
+    \vspace{-10pt}
     \begin{aligned}
         \bm{t} = \bm{\bar{t}} + \bm{T} \bm{c}
     \end{aligned}
 	\label{eq:tex_model}
+	\vspace{-10pt}
 \end{equation}
 where $\bm{t}$ is the mean texture, and $\bm{T}$ and $\bm{c}$ are the texture bases and texture parameters respectively.
 
