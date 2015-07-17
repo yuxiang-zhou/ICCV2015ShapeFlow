@@ -12,7 +12,7 @@ This experiment investigates the impact that the SVS representation described in
 %; for example, by interpolating its relative position with respect to its immediate reference frame neighbours on the newly generated dense shape instance, \ref{fig:extrapolate_landmarks}. 
 Accuracy is reported in terms of the normalized point-to-point error measure described in \cite{Zhu2012}.
 
-The Cumulative Error Distribution (CED) for this experiment is shown in Figure \ref{fig:svs_ced} while fitting statistics are reported in Table \ref{tab:svs_stats}. Looking at the results it can be clearly seen that using SVS results in a constant $\approx$5\% improvement over the simple binary shape representation for almost all CED graph and on the reported fitting statistics.
+The Cumulative Error Distribution (CED) for this experiment is shown in Figure \ref{fig:svs_ced} while fitting statistics are reported in Table \ref{tab:svs_stats}. Looking at the results it can be clearly seen that using SVS results in an almost constant $\approx$10\% improvement over the simple binary shape representation for most of the CED graph and reported fitting statistics.
 
 \begin{figure}[t!]
 \centering
@@ -37,14 +37,16 @@ Binary              & 0.0640 $\pm$ 0.0300 & 0.0588 & 39\%\\
 \label{tab:svs_stats}
 \end{table}
 
-\subsection{Constrained Basis}
+\subsection{Correspondence Bases}
 \label{exp:basis}
+This experiment investigates the importance of applying subspace constraints to the shape flow estimation stage. To this end, we build and compare the performance of two different dense AAMs. The first one (SVS-AAMs) is built from deformation fields obtained by minimizing the variational shape flow energy proposed in section \ref{varshapeflow}, \ie constraining the shape flow with the correspondence bases described in section \ref{sec:trabasis}. The second dense AAM (SVS-AAMs-unconstrained) is built using deformation fields obtained by replacing the correspondence bases by identity bases so that term \ref{eq:lowrank} in the proposed variational shape flow energy becomes: 
+\begin{equation}
+\beta \int_{\Omega}\sum_{n=1}^F\|\bm{u}_n(\bx)-\bm{v}_n(\bx)\|^2 \ud \bx \label{}
+\end{equation}
+with the rest of terms (\ref{eq:costfunc} and \ref{eq:TVterm}) remaining the same. Note that this corresponds to a degenerate case where shape flow becomes equivalent to classical frame-to-frame optical flow using TV regularization on the flow $\bm{u}_n$ \cite{Garg:2013hu}.
 
-This experiment investigate the impact of introducing subspace constrains for shape flow. The shape representations of training data are independence, thus simply applying flows on shapes breaks the fundamental assumption of motion smoothness. The hypothesis is able to be maintained for shapes as described in section~\ref{sec:trabasis}. To be specific, we take measures of point-to-point error for fitting same data with our pipeline with same configuration, but only alter the low rank basis. 
-
-The experiment results are manifested by constructing two dense AAMs, Basis-dAAMs and no-Basis-dAAMs,among 811 training images from Labelled Faces Parts in-the-Wild (LFPW)\cite{Belhumeur2011} database with 224 testing images using same annotation scheme by iBUG\footnoteref{ibug_300}. 
-Cumulative error distributions are shown in Figure~\ref{fig:basis_ced} and corresponding statistics are listed in Table~\ref{tab:basis_stats}. 
-It shows shape flow with constrained basis outperforms, constantly, standard flow technique by an unavoidable amount, which significantly supported the necessities of our low rank basis introduced in~\ref{sec:trabasis}.
+As before, both dense AAM are build using the 811 training images of LFPW database and tested on the 224 testing images of the same database. The cumulative error distributions graph for this experiment is shown in Figure~\ref{fig:basis_ced} and the fitting statistics reported in Table~\ref{tab:basis_stats}. 
+Both Figure~\ref{fig:basis_ced} and Table~\ref{tab:basis_stats} show that the incorporation of the correspondence bases leads to considerably better performant dense AAMs. This large difference in performance fully justifies the incorporation of these bases to our shape flow algorithm.
 
 \begin{figure}[t!]
 \centering
@@ -74,7 +76,7 @@ Unconstrained Flow  & 0.0698 $\pm$ 0.0458 & 0.0556 & 46\%\\
 \subsection{Non-rigid object alignment in-the-wild}
 \label{exp:alignment}
 
-In the following set of experiments we use the proposed methodology to build dense AAMs of various object classes (faces, ears, bottles and body pose) and quantitatively assess their respective fitting accuracy when fitted to novel in-the-wild images of the previous objects.
+In the following set of experiments we use the proposed methodology to build dense AAMs of 2 different object classes (faces and ears) and quantitatively assess their respective fitting accuracy when fitted to novel in-the-wild images of the previous objects.
 
 \subsubsection{Face alignment}
 \label{exp:face}
